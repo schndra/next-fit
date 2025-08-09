@@ -20,7 +20,7 @@ import { ProductFilters } from "../types";
 export function ProductsPageContent() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000]);
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 50000]);
   const [sortBy, setSortBy] = useState("featured");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [featured, setFeatured] = useState<boolean | undefined>(undefined);
@@ -31,7 +31,7 @@ export function ProductsPageContent() {
     search: searchTerm || undefined,
     category: selectedCategories.length > 0 ? selectedCategories[0] : undefined, // For now, support single category
     minPrice: priceRange[0] > 0 ? priceRange[0] : undefined,
-    maxPrice: priceRange[1] < 1000 ? priceRange[1] : undefined,
+    maxPrice: priceRange[1] < 50000 ? priceRange[1] : undefined,
     featured: featured,
     page: 1,
     limit: 20,

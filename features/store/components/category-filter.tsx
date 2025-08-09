@@ -22,7 +22,7 @@ interface CategoryFilterProps {
 export function CategoryFilter({
   selectedCategories = [],
   onCategoryChange,
-  priceRange = [0, 1000],
+  priceRange = [0, 50000],
   onPriceChange,
   featured,
   onFeaturedChange,
@@ -106,14 +106,14 @@ export function CategoryFilter({
           <Slider
             value={localPriceRange}
             onValueChange={handlePriceChange}
-            max={1000}
+            max={50000}
             min={0}
-            step={10}
+            step={1000}
             className="w-full"
           />
           <div className="flex justify-between text-sm text-muted-foreground">
-            <span>${localPriceRange[0]}</span>
-            <span>${localPriceRange[1]}</span>
+            <span>LKR {localPriceRange[0].toLocaleString("en-LK")}</span>
+            <span>LKR {localPriceRange[1].toLocaleString("en-LK")}</span>
           </div>
         </CardContent>
       </Card>

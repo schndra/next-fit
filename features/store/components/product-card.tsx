@@ -7,6 +7,7 @@ import { Heart, ShoppingCart, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { StoreProduct } from "../types";
+import { formatPrice } from "../utils/currency";
 
 interface ProductCardProps {
   product: StoreProduct;
@@ -90,11 +91,11 @@ export function ProductCard({ product }: ProductCardProps) {
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <span className="text-xl font-bold">
-                ${product.price.toFixed(2)}
+                {formatPrice(product.price)}
               </span>
               {product.compare_price && (
                 <span className="text-sm text-muted-foreground line-through">
-                  ${product.compare_price.toFixed(2)}
+                  {formatPrice(product.compare_price)}
                 </span>
               )}
             </div>
