@@ -204,7 +204,7 @@ export const CouponFormEdit = ({ coupon, mode }: CouponFormEditProps) => {
                             {selectedType === "PERCENTAGE"
                               ? "Percentage (%)"
                               : selectedType === "FIXED_AMOUNT"
-                              ? "Amount ($)"
+                              ? "Amount (LKR)"
                               : "Value"}
                             *
                           </FormLabel>
@@ -335,7 +335,7 @@ export const CouponFormEdit = ({ coupon, mode }: CouponFormEditProps) => {
                       name="minimum_amount"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Minimum Order Amount</FormLabel>
+                          <FormLabel>Minimum Order Amount (LKR)</FormLabel>
                           <FormControl>
                             <Input
                               {...field}
@@ -363,7 +363,7 @@ export const CouponFormEdit = ({ coupon, mode }: CouponFormEditProps) => {
                       name="maximum_amount"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Maximum Order Amount</FormLabel>
+                          <FormLabel>Maximum Order Amount (LKR)</FormLabel>
                           <FormControl>
                             <Input
                               {...field}

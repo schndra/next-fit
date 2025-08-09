@@ -11,6 +11,10 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("🌱 Starting database seeding...");
 
+  // Delete coupons first to avoid foreign key constraints
+  await prisma.coupon.deleteMany({});
+  console.log("🗑️  Cleared existing coupons");
+
   // Seed in order of dependencies
   await seedRoles(prisma);
   await seedSizes(prisma);

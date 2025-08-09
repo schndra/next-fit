@@ -8,9 +8,9 @@ export function cn(...inputs: ClassValue[]) {
 // Format currency
 export function formatCurrency(amount: number | string): string {
   const numAmount = typeof amount === "string" ? parseFloat(amount) : amount;
-  return new Intl.NumberFormat("en-US", {
+  return new Intl.NumberFormat("en-LK", {
     style: "currency",
-    currency: "USD",
+    currency: "LKR",
   }).format(numAmount);
 }
 

@@ -12,20 +12,20 @@ export const couponsData = [
     is_active: true,
     starts_at: new Date(),
     expires_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
-    minimum_amount: new Decimal(50),
+    minimum_amount: new Decimal(5000), // LKR 5,000
     maximum_amount: null,
   },
   {
-    code: "SAVE20",
+    code: "SAVE2000",
     type: "FIXED_AMOUNT" as const,
-    value: new Decimal(20),
-    description: "Save $20 on your next purchase",
+    value: new Decimal(2000), // LKR 2,000
+    description: "Save LKR 2,000 on your next purchase",
     usage_limit: 50,
     usage_limit_per_user: 2,
     is_active: true,
     starts_at: new Date(),
     expires_at: new Date(Date.now() + 60 * 24 * 60 * 60 * 1000), // 60 days from now
-    minimum_amount: new Decimal(100),
+    minimum_amount: new Decimal(10000), // LKR 10,000
     maximum_amount: null,
   },
   {
@@ -38,7 +38,7 @@ export const couponsData = [
     is_active: true,
     starts_at: new Date(),
     expires_at: null,
-    minimum_amount: new Decimal(25),
+    minimum_amount: new Decimal(2500), // LKR 2,500
     maximum_amount: null,
   },
   {
@@ -52,7 +52,7 @@ export const couponsData = [
     starts_at: new Date(),
     expires_at: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000), // 14 days from now
     minimum_amount: null,
-    maximum_amount: new Decimal(1000),
+    maximum_amount: new Decimal(100000), // LKR 100,000
   },
   {
     code: "EXPIRED10",
@@ -77,7 +77,7 @@ export const couponsData = [
     is_active: false,
     starts_at: new Date(),
     expires_at: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
-    minimum_amount: new Decimal(75),
+    minimum_amount: new Decimal(7500), // LKR 7,500
     maximum_amount: null,
   },
 ];
@@ -98,8 +98,7 @@ export const seedCoupons = async () => {
       return;
     }
 
-    // Delete existing coupons to avoid conflicts
-    await prisma.coupon.deleteMany();
+    // Coupons are already cleared in main seed function
 
     const coupons = await Promise.all(
       couponsData.map((couponData) =>

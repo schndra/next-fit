@@ -95,7 +95,7 @@ export const formatCouponValue = (coupon: SerializedCoupon): string => {
     case "PERCENTAGE":
       return `${coupon.value}%`;
     case "FIXED_AMOUNT":
-      return `$${coupon.value.toFixed(2)}`;
+      return `LKR ${coupon.value.toFixed(2)}`;
     case "FREE_SHIPPING":
       return "Free Shipping";
     default:
