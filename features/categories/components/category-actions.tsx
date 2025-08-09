@@ -27,7 +27,7 @@ export function CategoryActions({ category }: CategoryActionsProps) {
   };
 
   const handleEdit = () => {
-    router.push(`/admin/categories/${category.id}/edit`);
+    router.push(`/admin/categories/${category.id}`);
   };
 
   return (

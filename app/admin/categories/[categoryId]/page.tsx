@@ -14,8 +14,8 @@ const CategoryDetailPage = async ({ params }: CategoryDetailPageProps) => {
   const { categoryId } = params;
   const queryClient = getQueryClient();
 
-  // Only prefetch if not creating a new category
-  if (categoryId !== "new") {
+  // Only prefetch if not creating a new category and categoryId is valid
+  if (categoryId !== "new" && categoryId) {
     try {
       await queryClient.prefetchQuery({
         queryKey: ["category", categoryId],
@@ -24,7 +24,7 @@ const CategoryDetailPage = async ({ params }: CategoryDetailPageProps) => {
       });
     } catch (error) {
       console.error("Error prefetching category details:", error);
-      notFound();
+      // Don't call notFound() here, let the component handle it
     }
   }
 

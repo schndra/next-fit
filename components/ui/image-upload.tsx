@@ -74,6 +74,17 @@ export function ImageUpload({
     onChange(url);
   };
 
+  const isValidUrl = (string: string) => {
+    if (!string) return false;
+    try {
+      new URL(string);
+      return true;
+    } catch (_) {
+      // Check if it's a relative path starting with /
+      return string.startsWith("/");
+    }
+  };
+
   const handleRemove = () => {
     setPreview("");
     onChange("");
@@ -84,10 +95,13 @@ export function ImageUpload({
 
   return (
     <div className="space-y-4">
-      <Label>{label}</Label>
+      <div className="flex items-center gap-2">
+        <Label>{label}</Label>
+        <span className="text-xs text-muted-foreground">(Optional)</span>
+      </div>
 
       {/* Preview */}
-      {preview && (
+      {preview && isValidUrl(preview) && (
         <div className="relative group">
           <div className="relative w-full h-48 rounded-lg border border-gray-200 overflow-hidden bg-gray-50">
             <Image
@@ -154,11 +168,11 @@ export function ImageUpload({
         {/* URL Input */}
         <div className="space-y-2">
           <Label htmlFor="image-url" className="text-sm text-muted-foreground">
-            Or enter image URL
+            Or enter image URL (optional)
           </Label>
           <Input
             id="image-url"
-            placeholder="https://example.com/image.jpg"
+            placeholder="https://example.com/image.jpg or leave empty"
             value={preview}
             onChange={(e) => handleUrlChange(e.target.value)}
             disabled={disabled || isUploading}

@@ -2,7 +2,6 @@
 import { Button } from "@/components/ui/button";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { Separator } from "@/components/ui/separator";
 import {
   Form,
   FormControl,
@@ -143,7 +142,7 @@ function CategoryForm({ categoryId }: { categoryId: string }) {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-4">
           <Link href="/admin/categories">
             <Button variant="ghost" size="sm">
@@ -157,28 +156,27 @@ function CategoryForm({ categoryId }: { categoryId: string }) {
           </div>
         </div>
         {data && (
-          <Button
-            variant="destructive"
-            size="sm"
-            onClick={() => setShowDeleteDialog(true)}
-          >
-            <Trash2 className="mr-2 h-4 w-4" />
-            Delete
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              variant="destructive"
+              size="sm"
+              onClick={() => setShowDeleteDialog(true)}
+            >
+              <Trash2 className="mr-2 h-4 w-4" />
+              Delete
+            </Button>
+          </div>
         )}
       </div>
 
-      <Separator />
-
       {/* Form */}
-      <div className="grid gap-6">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            {/* Basic Information Card */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Basic Information</CardTitle>
-                <CardDescription>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          {/* Basic Information Card */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Basic Information</CardTitle>
+              <CardDescription>
                   Set up the fundamental details for your category.
                 </CardDescription>
               </CardHeader>
@@ -401,17 +399,23 @@ function CategoryForm({ categoryId }: { categoryId: string }) {
             </Card>
 
             {/* Action Buttons */}
-            <div className="flex items-center justify-end space-x-2 pt-4">
-              <Link href="/admin/categories">
-                <Button variant="outline" type="button">
-                  Cancel
-                </Button>
-              </Link>
-              <Button type="submit" disabled={isPending}>
-                {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                {action}
-              </Button>
-            </div>
+            <Card>
+              <CardContent className="pt-6">
+                <div className="flex items-center justify-end space-x-2">
+                  <Link href="/admin/categories">
+                    <Button variant="outline" type="button">
+                      Cancel
+                    </Button>
+                  </Link>
+                  <Button type="submit" disabled={isPending}>
+                    {isPending && (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    )}
+                    {action}
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
           </form>
         </Form>
       </div>

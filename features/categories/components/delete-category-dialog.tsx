@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -34,6 +36,8 @@ export function DeleteCategoryDialog({
   onClose,
 }: DeleteCategoryDialogProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+  const queryClient = useQueryClient();
 
   const handleDelete = async () => {
     try {
@@ -42,7 +46,16 @@ export function DeleteCategoryDialog({
 
       if (result.success) {
         toast.success(result.message);
+
+        // Invalidate relevant queries
+        queryClient.invalidateQueries({ queryKey: ["categories"] });
+        queryClient.invalidateQueries({ queryKey: ["category", category.id] });
+        queryClient.invalidateQueries({ queryKey: ["main-categories"] });
+
         onClose();
+
+        // Redirect to categories list
+        router.push("/admin/categories");
       } else {
         toast.error(result.message);
       }
