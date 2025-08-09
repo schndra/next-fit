@@ -69,6 +69,8 @@ const productsData = [
     is_active: true,
     is_featured: true,
     category_slug: "accessories",
+    colors: ["Black", "Silver", "White"], // Available colors
+    sizes: [], // No sizes for headphones
     images: [
       {
         url: "/images/sample-products/headphones-1.jpg",
@@ -94,6 +96,8 @@ const productsData = [
     is_active: true,
     is_featured: true,
     category_slug: "mens-clothing",
+    colors: ["White", "Black", "Gray", "Navy"], // T-shirt colors
+    sizes: ["S", "M", "L", "XL", "XXL"], // T-shirt sizes
     images: [
       {
         url: "/images/sample-products/tshirt-1.jpg",
@@ -114,6 +118,8 @@ const productsData = [
     is_active: true,
     is_featured: true,
     category_slug: "accessories",
+    colors: ["Black", "Silver", "Navy"], // Watch colors
+    sizes: [], // No sizes for watches
     images: [
       {
         url: "/images/sample-products/watch-1.jpg",
@@ -134,6 +140,8 @@ const productsData = [
     is_active: true,
     is_featured: true,
     category_slug: "accessories",
+    colors: ["Brown", "Black", "Maroon"], // Bag colors
+    sizes: [], // No sizes for bags
     images: [
       {
         url: "/images/sample-products/bag-1.jpg",
@@ -154,6 +162,8 @@ const productsData = [
     is_active: true,
     is_featured: true,
     category_slug: "footwear",
+    colors: ["Black", "White", "Navy", "Gray"], // Sneaker colors
+    sizes: ["38", "40", "42"], // Shoe sizes
     images: [
       {
         url: "/images/sample-products/sneakers-1.jpg",
@@ -174,6 +184,8 @@ const productsData = [
     is_active: true,
     is_featured: false,
     category_slug: "mens-clothing",
+    colors: ["Blue", "Black", "Gray"], // Jeans colors
+    sizes: ["30", "32", "34", "36", "38"], // Jeans sizes
     images: [
       {
         url: "/images/sample-products/jeans-1.jpg",
@@ -194,6 +206,8 @@ const productsData = [
     is_active: true,
     is_featured: false,
     category_slug: "activewear",
+    colors: ["Black", "Navy", "Purple", "Pink"], // Leggings colors
+    sizes: ["XS", "S", "M", "L", "XL"], // Leggings sizes
     images: [
       {
         url: "/images/sample-products/leggings-1.jpg",
@@ -214,6 +228,8 @@ const productsData = [
     is_active: true,
     is_featured: false,
     category_slug: "mens-clothing",
+    colors: ["Navy", "Black", "Green"], // Jacket colors
+    sizes: ["M", "L", "XL", "XXL"], // Jacket sizes
     images: [
       {
         url: "/images/sample-products/jacket-1.jpg",
@@ -305,6 +321,46 @@ export async function seedProducts(prisma: PrismaClient) {
           product_id: product.id,
         },
       });
+    }
+
+    // Connect colors to the product
+    if (productData.colors && productData.colors.length > 0) {
+      for (const colorName of productData.colors) {
+        const color = await prisma.color.findFirst({
+          where: { name: colorName },
+        });
+
+        if (color) {
+          await prisma.product.update({
+            where: { id: product.id },
+            data: {
+              colors: {
+                connect: { id: color.id },
+              },
+            },
+          });
+        }
+      }
+    }
+
+    // Connect sizes to the product
+    if (productData.sizes && productData.sizes.length > 0) {
+      for (const sizeValue of productData.sizes) {
+        const size = await prisma.size.findFirst({
+          where: { value: sizeValue },
+        });
+
+        if (size) {
+          await prisma.product.update({
+            where: { id: product.id },
+            data: {
+              sizes: {
+                connect: { id: size.id },
+              },
+            },
+          });
+        }
+      }
     }
 
     console.log(`✅ Created product: ${productData.title}`);
