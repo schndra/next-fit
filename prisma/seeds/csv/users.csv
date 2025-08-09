@@ -1,0 +1,3 @@
+email,password,first_name,last_name,mobile,roles
+"admin@example.com","Admin@123","Admin","User","1234567890","ROLE_ADMIN|ROLE_USER"
+"user@example.com","Admin@123","Regular","User","9876543210","ROLE_USER"

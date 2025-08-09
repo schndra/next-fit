@@ -1,42 +1,48 @@
 "use client";
 
-import { useState } from "react";
+import { useActionState, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import Link from "next/link";
+import { signInUser } from "@/lib/user.actions";
+import { useFormStatus } from "react-dom";
 
 const SigninForm = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
+  const [data, action] = useActionState(signInUser, {
+    success: false,
+    message: "",
+  });
 
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
-      // Handle sign in logic here
-    }, 2000);
+  const SignInButton = () => {
+    const { pending } = useFormStatus();
+
+    return (
+      <Button className="w-full" disabled={pending}>
+        {pending ? "Signing in..." : "Sign in"}
+      </Button>
+    );
   };
+
+  const handleSubmit = async (e: React.FormEvent) => {};
   return (
     <>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form action={action} className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="email">Email</Label>
           <div className="relative">
             <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
             <Input
               id="email"
+              name="email"
               type="email"
               placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              defaultValue={""}
               className="pl-10"
+              autoComplete="email"
               required
             />
           </div>
@@ -48,11 +54,12 @@ const SigninForm = () => {
             <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
             <Input
               id="password"
+              name="password"
               type={showPassword ? "text" : "password"}
               placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              defaultValue={""}
               className="pl-10 pr-10"
+              autoComplete="password"
               required
             />
             <Button
@@ -94,9 +101,10 @@ const SigninForm = () => {
           </div>
         </div>
 
-        <Button type="submit" className="w-full" disabled={isLoading}>
-          {isLoading ? "Signing in..." : "Sign in"}
-        </Button>
+        <SignInButton />
+        {data && !data.success && (
+          <div className="text-center text-destructive">{data.message}</div>
+        )}
       </form>
     </>
   );

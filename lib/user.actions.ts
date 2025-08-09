@@ -3,28 +3,20 @@
 import { signInFormSchema } from "./validators";
 import { signIn, signOut } from "@/auth";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
-import z, { success } from "zod";
 
 // Sign in the user with credentials
-export async function signInUser(
-  credentials: z.infer<typeof signInFormSchema>
-) {
-  const result = signInFormSchema.safeParse(credentials);
-  if (!result.success) {
-    return { success: false, error: "Invalid credentials" };
-  }
-
-  const { email, password } = result.data;
-
+export async function signInUser(prevState: unknown, formData: FormData) {
   try {
-    await signIn("credentials", {
-      email,
-      password,
+    const user = signInFormSchema.parse({
+      email: formData.get("email"),
+      password: formData.get("password"),
     });
-    return { success: true, message: "Successfully signed in" };
+
+    await signIn("credentials", user);
+
+    return { success: true, message: "Signed in successfully" };
   } catch (error) {
     if (isRedirectError(error)) {
-      //   return { redirect: error.destination };
       throw error;
     }
     return { success: false, message: "Invalid email or password" };

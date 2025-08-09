@@ -1,5 +1,6 @@
 import { PrismaClient } from "../app/generated/prisma";
 import { seedRoles } from "./seeds/roles";
+import { seedUsers } from "./seeds/users";
 
 const prisma = new PrismaClient();
 
@@ -12,7 +13,7 @@ async function main() {
   // await seedOrganizations(prisma);
   // await seedDepartments(prisma);
   // await seedDivisions(prisma);
-  // await seedUsers(prisma);
+  await seedUsers(prisma);
   // await seedTransferTypesLive(prisma);
   // await seedProducts(prisma);
   // await seedTransferTypes(prisma);

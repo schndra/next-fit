@@ -138,6 +138,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           },
         });
 
+        console.log("USER_FOUND", user);
+
         // check if user exists and if the password matches
         if (user && user.password) {
           const isMatch = await compare(
