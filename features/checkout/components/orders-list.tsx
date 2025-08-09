@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Package, Calendar, DollarSign, Eye, ShoppingBag } from "lucide-react";
 import { type Order } from "../actions/order.actions";
+import { formatCurrency } from "@/lib/utils";
 
 interface OrdersListProps {
   orders: Order[];
@@ -62,7 +63,8 @@ export function OrdersList({ orders }: OrdersListProps) {
                     {new Date(order.created_at).toLocaleDateString()}
                   </span>
                   <span className="flex items-center gap-1">
-                    <DollarSign className="h-4 w-4" />${order.total.toFixed(2)}
+                    <DollarSign className="h-4 w-4" />
+                    {formatCurrency(order.total)}
                   </span>
                 </CardDescription>
               </div>
@@ -112,11 +114,12 @@ export function OrdersList({ orders }: OrdersListProps) {
                           {item.product.title}
                         </div>
                         <div className="text-xs text-muted-foreground">
-                          Qty: {item.quantity} • ${item.price.toFixed(2)} each
+                          Qty: {item.quantity} • {formatCurrency(item.price)}{" "}
+                          each
                         </div>
                       </div>
                       <div className="text-sm font-medium">
-                        ${item.total.toFixed(2)}
+                        {formatCurrency(item.total)}
                       </div>
                     </div>
                   ))}

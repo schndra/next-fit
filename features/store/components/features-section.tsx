@@ -20,8 +20,8 @@ export function FeaturesSection() {
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground">
-                Free shipping on orders over $50. Express delivery available for
-                urgent orders.
+                Free shipping on orders over LKR 15,000. Express delivery
+                available for urgent orders.
               </p>
             </CardContent>
           </Card>

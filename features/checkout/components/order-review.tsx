@@ -26,6 +26,7 @@ import {
 import { type ShippingAddressData, type PaymentMethodData } from "../schema";
 import { type ShippingAddress } from "../types";
 import { type CartItem } from "@/features/store/actions/cart.actions";
+import { formatCurrency } from "@/lib/utils";
 
 interface OrderReviewProps {
   cartItems: CartItem[];
@@ -122,13 +123,15 @@ export function OrderReview({
                     </div>
                   </div>
                   <div className="text-right">
-                    <div className="font-medium">${item.product.price}</div>
+                    <div className="font-medium">
+                      {formatCurrency(item.product.price)}
+                    </div>
                     <div className="text-sm text-muted-foreground">
                       Qty: {item.quantity}
                     </div>
                   </div>
                   <div className="font-semibold">
-                    ${(item.product.price * item.quantity).toFixed(2)}
+                    {formatCurrency(item.product.price * item.quantity)}
                   </div>
                 </div>
               ))}
@@ -213,7 +216,9 @@ export function OrderReview({
                     {SHIPPING_METHODS[shippingMethod].days}
                   </div>
                 </div>
-                <div className="font-semibold">${shippingCost.toFixed(2)}</div>
+                <div className="font-semibold">
+                  {formatCurrency(shippingCost)}
+                </div>
               </div>
             </div>
           </div>
@@ -240,20 +245,20 @@ export function OrderReview({
             <div className="space-y-2">
               <div className="flex justify-between">
                 <span>Subtotal</span>
-                <span>${subtotal.toFixed(2)}</span>
+                <span>{formatCurrency(subtotal)}</span>
               </div>
               <div className="flex justify-between">
                 <span>Shipping</span>
-                <span>${shippingCost.toFixed(2)}</span>
+                <span>{formatCurrency(shippingCost)}</span>
               </div>
               <div className="flex justify-between">
                 <span>Tax</span>
-                <span>${tax.toFixed(2)}</span>
+                <span>{formatCurrency(tax)}</span>
               </div>
               <Separator />
               <div className="flex justify-between font-semibold text-lg">
                 <span>Total</span>
-                <span>${total.toFixed(2)}</span>
+                <span>{formatCurrency(total)}</span>
               </div>
             </div>
           </div>
@@ -280,7 +285,7 @@ export function OrderReview({
                   Placing Order...
                 </>
               ) : (
-                `Place Order - $${total.toFixed(2)}`
+                `Place Order - ${formatCurrency(total)}`
               )}
             </Button>
           </div>

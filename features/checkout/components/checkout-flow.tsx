@@ -32,6 +32,7 @@ import { placeOrder } from "../actions/order.actions";
 import { toast } from "sonner";
 import { type ShippingAddressData, type PaymentMethodData } from "../schema";
 import { type ShippingAddress } from "../types";
+import { formatCurrency } from "@/lib/utils";
 
 const STEPS = [
   { id: 1, title: "Login", icon: User, description: "Sign in to your account" },
@@ -323,7 +324,7 @@ export function CheckoutFlow() {
                   </div>
                   <div className="flex justify-between text-sm">
                     <span>Shipping</span>
-                    <span>$0.00</span>
+                    <span>{formatCurrency(0)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span>Tax</span>

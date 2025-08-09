@@ -130,6 +130,8 @@ export function useCreateOrder() {
       queryClient.invalidateQueries({
         queryKey: ["checkout-summary", variables.userId],
       });
+      // Invalidate orders queries to refresh the orders list
+      queryClient.invalidateQueries({ queryKey: ["orders", variables.userId] });
 
       toast.success(`Order ${order.order_number} created successfully!`);
     },

@@ -2,6 +2,9 @@
 export { CheckoutSteps } from "./components/checkout-steps";
 export { CheckoutSummary } from "./components/checkout-summary";
 export { ShippingAddressSelector } from "./components/shipping-address-selector";
+export { OrdersList } from "./components/orders-list";
+export { OrdersClient } from "./components/orders-client";
+export { OrderClient } from "./components/order-client";
 
 // Hooks
 export {
@@ -12,6 +15,8 @@ export {
   useCheckoutSummary,
   useCreateOrder,
 } from "./hooks/use-checkout";
+
+export { useUserOrders, useOrder } from "./hooks/use-orders";
 
 // Actions
 export {

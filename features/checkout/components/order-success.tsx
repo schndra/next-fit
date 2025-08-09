@@ -21,6 +21,7 @@ import {
   ArrowLeft,
 } from "lucide-react";
 import { type Order } from "@/features/checkout/actions/order.actions";
+import { formatCurrency } from "@/lib/utils";
 
 interface OrderSuccessProps {
   order: Order;
@@ -116,14 +117,14 @@ export function OrderSuccess({ order }: OrderSuccessProps) {
                       </div>
                       <div className="text-right">
                         <div className="font-medium">
-                          ${item.price.toFixed(2)}
+                          {formatCurrency(item.price)}
                         </div>
                         <div className="text-sm text-muted-foreground">
                           Qty: {item.quantity}
                         </div>
                       </div>
                       <div className="font-semibold">
-                        ${item.total.toFixed(2)}
+                        {formatCurrency(item.total)}
                       </div>
                     </div>
                   ))}
@@ -225,26 +226,26 @@ export function OrderSuccess({ order }: OrderSuccessProps) {
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span>Subtotal</span>
-                    <span>${order.subtotal.toFixed(2)}</span>
+                    <span>{formatCurrency(order.subtotal)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span>Shipping</span>
-                    <span>${order.shipping_amount.toFixed(2)}</span>
+                    <span>{formatCurrency(order.shipping_amount)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span>Tax</span>
-                    <span>${order.tax_amount.toFixed(2)}</span>
+                    <span>{formatCurrency(order.tax_amount)}</span>
                   </div>
                   {order.discount_amount > 0 && (
                     <div className="flex justify-between text-sm text-green-600">
                       <span>Discount</span>
-                      <span>-${order.discount_amount.toFixed(2)}</span>
+                      <span>-{formatCurrency(order.discount_amount)}</span>
                     </div>
                   )}
                   <Separator />
                   <div className="flex justify-between font-semibold text-lg">
                     <span>Total</span>
-                    <span>${order.total.toFixed(2)}</span>
+                    <span>{formatCurrency(order.total)}</span>
                   </div>
                 </div>
 

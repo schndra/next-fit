@@ -1,6 +1,7 @@
-import { notFound } from "next/navigation";
+import { getQueryClient } from "@/components/providers/react-query-provider";
 import { getOrderById } from "@/features/checkout/actions/order.actions";
-import { OrderSuccess } from "@/features/checkout/components/order-success";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { OrderClient } from "@/features/checkout/components/order-client";
 
 interface OrderPageProps {
   params: {
@@ -9,11 +10,18 @@ interface OrderPageProps {
 }
 
 export default async function OrderPage({ params }: OrderPageProps) {
-  const order = await getOrderById(params.orderId);
+  const queryClient = getQueryClient();
 
-  if (!order) {
-    notFound();
-  }
+  // Prefetch order data for instant loading
+  await queryClient.prefetchQuery({
+    queryKey: ["order", params.orderId],
+    queryFn: () => getOrderById(params.orderId),
+    staleTime: 10 * 60 * 1000, // 10 minutes
+  });
 
-  return <OrderSuccess order={order} />;
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <OrderClient orderId={params.orderId} />
+    </HydrationBoundary>
+  );
 }
