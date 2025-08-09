@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -13,8 +11,13 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Bell, Search, User, Settings, LogOut } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { signOutUser } from "@/features/auth/actions/user.actions";
+import { auth } from "@/auth";
+import Link from "next/link";
 
-export function AdminHeader() {
+export async function AdminHeader() {
+  const session = await auth();
+
   return (
     <header className="bg-white border-b border-gray-200 px-6 py-4">
       <div className="flex items-center justify-between">
@@ -55,25 +58,34 @@ export function AdminHeader() {
             <DropdownMenuContent className="w-56" align="end" forceMount>
               <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">Admin User</p>
+                  <p className="text-sm font-medium leading-none">
+                    {session?.user?.name || "Admin User"}
+                  </p>
                   <p className="text-xs leading-none text-muted-foreground">
-                    admin@nextfit.com
+                    {session?.user?.email || "admin@nextfit.com"}
                   </p>
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
                 <User className="mr-2 h-4 w-4" />
-                <span>Profile</span>
+                <Link href="/admin/profile">Profile</Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <Settings className="mr-2 h-4 w-4" />
-                <span>Settings</span>
+                <Link href="/admin/settings">Settings</Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <LogOut className="mr-2 h-4 w-4" />
-                <span>Log out</span>
+              <DropdownMenuItem className="p-0 mb-1">
+                <form action={signOutUser} className="w-full">
+                  <Button
+                    className="w-full py-4 px-2 h-4 justify-start"
+                    variant="ghost"
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Log out
+                  </Button>
+                </form>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
