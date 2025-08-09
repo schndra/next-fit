@@ -40,6 +40,43 @@ export const getRoleById = async (id: string): Promise<RoleType | null> => {
   }
 };
 
+export const getRoleDetails = async (id: string) => {
+  try {
+    const role = await prisma.role.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        users: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            created_at: true,
+          },
+        },
+        _count: {
+          select: {
+            users: true,
+          },
+        },
+      },
+    });
+
+    if (!role) {
+      return null;
+    }
+
+    return {
+      ...role,
+      userCount: role._count.users,
+    };
+  } catch (error) {
+    console.error("Error fetching role details:", error);
+    return null;
+  }
+};
+
 export const createRole = async (
   data: CreateRoleInput
 ): Promise<{
