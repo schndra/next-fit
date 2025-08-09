@@ -28,14 +28,14 @@ const navigation = [
   { name: "Products", href: "/admin/products", icon: Package, badge: "1,234" },
   { name: "Orders", href: "/admin/orders", icon: ShoppingCart, badge: "23" },
   { name: "Customers", href: "/admin/customers", icon: Users },
-  { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
+  // { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
   { name: "Categories", href: "/admin/categories", icon: Tag },
   { name: "Sizes", href: "/admin/sizes", icon: Ruler },
   { name: "Colors", href: "/admin/colors", icon: Palette },
   { name: "Coupons", href: "/admin/coupons", icon: Percent },
   { name: "Roles", href: "/admin/roles", icon: Shield },
-  { name: "Reports", href: "/admin/reports", icon: FileText },
-  { name: "Settings", href: "/admin/settings", icon: Settings },
+  // { name: "Reports", href: "/admin/reports", icon: FileText },
+  // { name: "Settings", href: "/admin/settings", icon: Settings },
 ];
 
 export function AdminSidebar() {
