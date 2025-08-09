@@ -140,7 +140,7 @@ function CategoryForm({ categoryId }: { categoryId: string }) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="container mx-auto py-8 space-y-6">
       {/* Header */}
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-4">
@@ -169,18 +169,23 @@ function CategoryForm({ categoryId }: { categoryId: string }) {
         )}
       </div>
 
-      {/* Form */}
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          {/* Basic Information Card */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Basic Information</CardTitle>
-              <CardDescription>
-                  Set up the fundamental details for your category.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
+      {/* Single Card Form */}
+      <Card>
+        <CardHeader>
+          <CardTitle>{title}</CardTitle>
+          <CardDescription>{description}</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              {/* Basic Information Section */}
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-lg font-medium">Basic Information</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Set up the fundamental details for your category.
+                  </p>
+                </div>
                 <div className="grid gap-6 md:grid-cols-2">
                   <FormField
                     control={form.control}
@@ -245,6 +250,7 @@ function CategoryForm({ categoryId }: { categoryId: string }) {
                   )}
                 />
 
+                {/* Image Upload */}
                 <FormField
                   control={form.control}
                   name="img"
@@ -264,18 +270,16 @@ function CategoryForm({ categoryId }: { categoryId: string }) {
                     </FormItem>
                   )}
                 />
-              </CardContent>
-            </Card>
+              </div>
 
-            {/* Organization Card */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Organization</CardTitle>
-                <CardDescription>
-                  Configure how this category fits into your store structure.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
+              {/* Organization Section */}
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-lg font-medium">Organization</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Configure how this category fits into your store structure.
+                  </p>
+                </div>
                 <div className="grid gap-6 md:grid-cols-2">
                   <FormField
                     control={form.control}
@@ -336,18 +340,16 @@ function CategoryForm({ categoryId }: { categoryId: string }) {
                     )}
                   />
                 </div>
-              </CardContent>
-            </Card>
+              </div>
 
-            {/* Settings Card */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Category Settings</CardTitle>
-                <CardDescription>
-                  Configure visibility and category type settings.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
+              {/* Settings Section */}
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-lg font-medium">Category Settings</h3>
+                  <p className="text-sm text-muted-foreground">
+                    Configure visibility and category type settings.
+                  </p>
+                </div>
                 <div className="grid gap-6 md:grid-cols-2">
                   <FormField
                     control={form.control}
@@ -395,39 +397,35 @@ function CategoryForm({ categoryId }: { categoryId: string }) {
                     )}
                   />
                 </div>
-              </CardContent>
-            </Card>
+              </div>
 
-            {/* Action Buttons */}
-            <Card>
-              <CardContent className="pt-6">
-                <div className="flex items-center justify-end space-x-2">
-                  <Link href="/admin/categories">
-                    <Button variant="outline" type="button">
-                      Cancel
-                    </Button>
-                  </Link>
-                  <Button type="submit" disabled={isPending}>
-                    {isPending && (
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    )}
-                    {action}
+              {/* Action Buttons */}
+              <div className="flex items-center justify-end space-x-2 pt-6 border-t">
+                <Link href="/admin/categories">
+                  <Button variant="outline" type="button">
+                    Cancel
                   </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </form>
-        </Form>
-      </div>
+                </Link>
+                <Button type="submit" disabled={isPending}>
+                  {isPending && (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  )}
+                  {action}
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
 
       {/* Delete Dialog */}
-      {data && (
+      {/* {data && (
         <DeleteCategoryDialog
           category={data}
           open={showDeleteDialog}
           onClose={() => setShowDeleteDialog(false)}
         />
-      )}
+      )} */}
     </div>
   );
 }
