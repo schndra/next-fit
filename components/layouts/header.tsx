@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Search, ShoppingCart, User, Heart, Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { ModeToggle } from "../mode-toggle";
 
 export function Header() {
   const [cartItems] = useState(3); // Mock cart items count
@@ -60,6 +61,9 @@ export function Header() {
 
           {/* User Actions */}
           <div className="flex items-center space-x-4">
+            {/* ModeToggle */}
+            <ModeToggle />
+
             {/* Wishlist */}
             <Button variant="ghost" size="icon" className="hidden md:flex">
               <Heart className="h-5 w-5" />
