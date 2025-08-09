@@ -45,7 +45,7 @@ export function AdminSidebar() {
     >
       <div className="flex items-center justify-between p-4 border-b">
         {!collapsed && (
-          <h2 className="text-xl font-bold text-blue-600">ShopHub Admin</h2>
+          <h2 className="text-xl font-bold text-blue-600">NextFit Admin</h2>
         )}
         <Button
           variant="ghost"

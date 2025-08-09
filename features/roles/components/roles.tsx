@@ -6,15 +6,11 @@ import {
   Plus,
   Search,
   Filter,
-  MoreHorizontal,
-  Eye,
-  Edit,
-  Trash2,
+  RefreshCw,
+  AlertCircle,
   Users,
   Shield,
   UserCheck,
-  RefreshCw,
-  AlertCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -25,25 +21,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { getAllRoles } from "../actions/roles.actions";
-import { RoleType } from "./column";
+import { RoleType, columns } from "./column";
+import { DataTable } from "../../../components/data-display/data-table";
 
 const Roles = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -66,31 +46,10 @@ const Roles = () => {
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
   });
 
-  const filteredRoles = roles.filter(
-    (role: RoleType) =>
-      role.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (role.description &&
-        role.description.toLowerCase().includes(searchTerm.toLowerCase()))
-  );
+  const filteredRoles = roles; // Let DataTable handle the filtering
 
   const handleRefresh = () => {
     refetch();
-  };
-
-  const getStatusColor = (role: RoleType) => {
-    // You can customize this based on your role status logic
-    if (role.name.toLowerCase() === "admin") return "bg-red-100 text-red-800";
-    if (role.name.toLowerCase() === "user")
-      return "bg-green-100 text-green-800";
-    return "bg-blue-100 text-blue-800";
-  };
-
-  const getRoleIcon = (role: RoleType) => {
-    if (role.name.toLowerCase() === "admin")
-      return <Shield className="h-4 w-4" />;
-    if (role.name.toLowerCase() === "user")
-      return <UserCheck className="h-4 w-4" />;
-    return <Users className="h-4 w-4" />;
   };
 
   return (
@@ -274,123 +233,26 @@ const Roles = () => {
             </div>
 
             {/* Roles Table */}
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Role</TableHead>
-                  <TableHead>Description</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Permissions</TableHead>
-                  <TableHead>Users</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {isLoading ? (
-                  <TableRow>
-                    <TableCell colSpan={7} className="text-center py-8">
-                      Loading roles...
-                    </TableCell>
-                  </TableRow>
-                ) : isError ? (
-                  <TableRow>
-                    <TableCell
-                      colSpan={7}
-                      className="text-center py-8 text-red-600"
-                    >
-                      Error loading roles:{" "}
-                      {(error as Error)?.message || "Unknown error"}
-                    </TableCell>
-                  </TableRow>
-                ) : filteredRoles.length === 0 ? (
-                  <TableRow>
-                    <TableCell colSpan={7} className="text-center py-8">
-                      No roles found
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  filteredRoles.map((role: RoleType) => (
-                    <TableRow key={role.id}>
-                      <TableCell>
-                        <div className="flex items-center space-x-3">
-                          {getRoleIcon(role)}
-                          <div>
-                            <div className="font-medium">{role.name}</div>
-                            <div className="text-sm text-muted-foreground">
-                              ID: {role.id.slice(0, 8)}...
-                            </div>
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <div className="max-w-xs">
-                          {role.description || "No description"}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <Badge className={getStatusColor(role)}>
-                          {role.name.toLowerCase().includes("admin")
-                            ? "Admin"
-                            : role.name.toLowerCase().includes("user")
-                            ? "User"
-                            : "Custom"}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <span className="text-sm text-muted-foreground">
-                          {/* This would come from your permissions system */}
-                          View permissions
-                        </span>
-                      </TableCell>
-                      <TableCell>
-                        <span className="text-sm">
-                          {/* This would come from your user-role relationship */}
-                          0 users
-                        </span>
-                      </TableCell>
-                      <TableCell>
-                        <Badge
-                          variant="outline"
-                          className="text-green-600 border-green-600"
-                        >
-                          Active
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" size="icon">
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuItem>
-                              <Eye className="mr-2 h-4 w-4" />
-                              View Details
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                              <Edit className="mr-2 h-4 w-4" />
-                              Edit Role
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>
-                              <Users className="mr-2 h-4 w-4" />
-                              Manage Users
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem className="text-red-600">
-                              <Trash2 className="mr-2 h-4 w-4" />
-                              Delete Role
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </Table>
+            {isLoading ? (
+              <div className="rounded-md border">
+                <div className="h-24 flex items-center justify-center">
+                  Loading roles...
+                </div>
+              </div>
+            ) : isError ? (
+              <div className="rounded-md border border-red-200">
+                <div className="h-24 flex items-center justify-center text-red-600">
+                  Error loading roles:{" "}
+                  {(error as Error)?.message || "Unknown error"}
+                </div>
+              </div>
+            ) : (
+              <DataTable
+                columns={columns}
+                data={roles}
+                searchValue={searchTerm}
+              />
+            )}
           </CardContent>
         </Card>
       )}
