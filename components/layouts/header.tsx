@@ -1,12 +1,12 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 
-import { Search, ShoppingCart, User, Heart, Menu } from "lucide-react";
+import { Search, Heart, Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ModeToggle } from "../mode-toggle";
 import StoreUserButton from "../user-button";
+import { CartDropdown } from "@/features/store/components/cart-dropdown";
 
 export function Header() {
   // const [cartItems] = useState(3); // Mock cart items count
@@ -61,14 +61,7 @@ export function Header() {
             </Button>
 
             {/* Cart */}
-            <Button variant="ghost" size="icon" className="relative">
-              <ShoppingCart className="h-5 w-5" />
-              {/* {cartItems > 0 && ( */}
-              <Badge className="absolute -top-2 -right-2 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs">
-                4
-              </Badge>
-              {/* )} */}
-            </Button>
+            <CartDropdown />
 
             {/* User Menu */}
             <StoreUserButton />

@@ -3,11 +3,12 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Heart, ShoppingCart, Star } from "lucide-react";
+import { Heart, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { StoreProduct } from "../types";
 import { formatPrice } from "../utils/currency";
+import { AddToCartButton } from "./add-to-cart-button";
 
 interface ProductCardProps {
   product: StoreProduct;
@@ -101,10 +102,12 @@ export function ProductCard({ product }: ProductCardProps) {
             </div>
           </div>
 
-          <Button className="w-full">
-            <ShoppingCart className="h-4 w-4 mr-2" />
-            Add to Cart
-          </Button>
+          <AddToCartButton
+            productId={product.id}
+            productTitle={product.title}
+            availableStock={product.quantity}
+            showQuantitySelector={false}
+          />
         </div>
       </CardContent>
     </Card>

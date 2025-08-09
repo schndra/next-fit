@@ -4,6 +4,7 @@ export interface StoreProduct {
   price: number;
   compare_price?: number;
   slug: string;
+  quantity: number;
   images: Array<{
     id: string;
     url: string;
