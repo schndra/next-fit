@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -14,16 +15,19 @@ import { MoreHorizontal, Eye, Edit, Trash2, Users } from "lucide-react";
 import { RoleType } from "./column";
 import { EditRoleDialog } from "./edit-role-dialog";
 import { DeleteRoleDialog } from "./delete-role-dialog";
-import { ViewRoleDialog } from "./view-role-dialog";
 
 interface RoleActionsProps {
   role: RoleType;
 }
 
 export function RoleActions({ role }: RoleActionsProps) {
-  const [viewOpen, setViewOpen] = useState(false);
+  const router = useRouter();
   const [editOpen, setEditOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
+
+  const handleViewRole = () => {
+    router.push(`/admin/roles/${role.id}`);
+  };
 
   return (
     <>
@@ -35,7 +39,7 @@ export function RoleActions({ role }: RoleActionsProps) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => setViewOpen(true)}>
+          <DropdownMenuItem onClick={handleViewRole}>
             <Eye className="mr-2 h-4 w-4" />
             View Details
           </DropdownMenuItem>
@@ -57,12 +61,6 @@ export function RoleActions({ role }: RoleActionsProps) {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-
-      <ViewRoleDialog
-        roleId={role.id}
-        open={viewOpen}
-        onOpenChange={setViewOpen}
-      />
 
       <EditRoleDialog role={role} open={editOpen} onOpenChange={setEditOpen} />
 

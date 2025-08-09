@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import {
   Dialog,
   DialogContent,
@@ -20,15 +21,18 @@ interface DeleteRoleDialogProps {
   role: RoleType;
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  redirectAfterDelete?: boolean;
 }
 
 export function DeleteRoleDialog({
   role,
   open,
   onOpenChange,
+  redirectAfterDelete = false,
 }: DeleteRoleDialogProps) {
   const [isLoading, setIsLoading] = useState(false);
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   const handleDelete = async () => {
     setIsLoading(true);
@@ -40,6 +44,12 @@ export function DeleteRoleDialog({
         onOpenChange(false);
         // Invalidate and refetch roles
         queryClient.invalidateQueries({ queryKey: ["roles"] });
+        queryClient.invalidateQueries({ queryKey: ["role-details"] });
+
+        // Redirect to roles page if specified
+        if (redirectAfterDelete) {
+          router.push("/admin/roles");
+        }
       } else {
         toast.error(result.message);
       }

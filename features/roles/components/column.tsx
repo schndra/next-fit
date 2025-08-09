@@ -1,8 +1,9 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Users, Shield, UserCheck, ArrowUpDown } from "lucide-react";
+import { Users, Shield, UserCheck, ArrowUpDown, Eye } from "lucide-react";
 import { RoleActions } from "./role-actions";
+import Link from "next/link";
 
 export type RoleType = {
   id: string;
@@ -52,14 +53,30 @@ export const columns: ColumnDef<RoleType>[] = [
     cell: ({ row }) => {
       const role = row.original;
       return (
-        <div className="flex items-center space-x-3">
-          {getRoleIcon(role)}
-          <div>
-            <div className="font-medium">{role.name}</div>
-            <div className="text-sm text-muted-foreground">
-              ID: {role.id.slice(0, 8)}...
+        <div className="flex items-center justify-between space-x-3">
+          <Link
+            href={`/admin/roles/${role.id}`}
+            className="flex items-center space-x-3 hover:opacity-80 transition-opacity"
+          >
+            {getRoleIcon(role)}
+            <div>
+              <div className="font-medium text-blue-600 hover:text-blue-800">
+                {role.name}
+              </div>
+              <div className="text-sm text-muted-foreground">
+                ID: {role.id.slice(0, 8)}...
+              </div>
             </div>
-          </div>
+          </Link>
+          <Link href={`/admin/roles/${role.id}`}>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+              <Eye className="h-4 w-4" />
+            </Button>
+          </Link>
         </div>
       );
     },
