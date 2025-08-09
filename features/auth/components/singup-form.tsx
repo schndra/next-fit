@@ -27,6 +27,13 @@ const SingupForm = () => {
     watch,
   } = useForm<SignupFormData>({
     resolver: zodResolver(signupSchema),
+    defaultValues: {
+      first_name: "",
+      last_name: "",
+      email: "",
+      password: "",
+      phone: "",
+    },
   });
 
   //   const signupMutation = useMutation({
