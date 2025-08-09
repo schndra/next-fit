@@ -3,9 +3,9 @@ import { getProductDetails } from "@/features/products/actions/products.actions"
 import { getAllCategories } from "@/features/categories/actions/categories.actions";
 import { getAllColors } from "@/features/colors/actions/colors.actions";
 import { getAllSizes } from "@/features/sizes/actions/sizes.actions";
-import { ProductFormComplete } from "@/features/products/components/product-form-complete";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { notFound } from "next/navigation";
+import { ProductFormReactHookForm } from "@/features/products/components/product-form";
 
 interface ProductPageProps {
   params: Promise<{ productId: string }>;
@@ -51,7 +51,7 @@ const ProductPage = async ({ params }: ProductPageProps) => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <ProductFormComplete initialData={initialData} />
+      <ProductFormReactHookForm productId={productId} />
     </HydrationBoundary>
   );
 };

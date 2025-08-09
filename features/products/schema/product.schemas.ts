@@ -24,7 +24,7 @@ export const createProductSchema = z
       ),
     price: z
       .number()
-      .min(0, "Price must be positive")
+      .min(0.01, "Price must be greater than 0")
       .max(999999.99, "Price is too high")
       .refine(
         (val) => {
@@ -136,6 +136,7 @@ export const createProductSchema = z
           sort_order: z.number().default(0),
         })
       )
+      .min(1, "At least one product image is required")
       .default([]),
   })
   .refine(
