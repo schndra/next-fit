@@ -19,6 +19,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Shield,
+  Ruler,
 } from "lucide-react";
 
 const navigation = [
@@ -28,6 +29,7 @@ const navigation = [
   { name: "Customers", href: "/admin/customers", icon: Users },
   { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
   { name: "Categories", href: "/admin/categories", icon: Tag },
+  { name: "Sizes", href: "/admin/sizes", icon: Ruler },
   { name: "Coupons", href: "/admin/coupons", icon: Percent },
   { name: "Roles", href: "/admin/roles", icon: Shield },
   { name: "Reports", href: "/admin/reports", icon: FileText },
