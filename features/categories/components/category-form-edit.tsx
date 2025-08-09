@@ -419,13 +419,13 @@ function CategoryForm({ categoryId }: { categoryId: string }) {
       </Card>
 
       {/* Delete Dialog */}
-      {/* {data && (
+      {data && (
         <DeleteCategoryDialog
           category={data}
           open={showDeleteDialog}
           onClose={() => setShowDeleteDialog(false)}
         />
-      )} */}
+      )}
     </div>
   );
 }
