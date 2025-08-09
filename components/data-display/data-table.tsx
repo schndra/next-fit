@@ -22,6 +22,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 // Extend the ColumnMeta type to include className
 declare module "@tanstack/react-table" {
@@ -34,12 +35,16 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   searchValue?: string;
+  containerClassName?: string;
+  tableClassName?: string;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   searchValue = "",
+  containerClassName = "",
+  tableClassName = "",
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -67,18 +72,25 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className="space-y-4">
+    <div className={cn("space-y-4", containerClassName)}>
       <div className="overflow-hidden rounded-md border">
         <div className="overflow-x-auto max-w-full">
-          <Table className="relative">
+          <Table className={cn("relative min-w-full", tableClassName)}>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
+                    const isSticky =
+                      header.column.columnDef.meta?.className?.includes(
+                        "sticky"
+                      );
                     return (
                       <TableHead
                         key={header.id}
-                        className={header.column.columnDef.meta?.className}
+                        className={cn(
+                          header.column.columnDef.meta?.className || "",
+                          isSticky && "z-10 border-l border-border"
+                        )}
                       >
                         {header.isPlaceholder
                           ? null
@@ -100,17 +112,26 @@ export function DataTable<TData, TValue>({
                     data-state={row.getIsSelected() && "selected"}
                     className="group"
                   >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell
-                        key={cell.id}
-                        className={cell.column.columnDef.meta?.className}
-                      >
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
+                    {row.getVisibleCells().map((cell) => {
+                      const isSticky =
+                        cell.column.columnDef.meta?.className?.includes(
+                          "sticky"
+                        );
+                      return (
+                        <TableCell
+                          key={cell.id}
+                          className={cn(
+                            cell.column.columnDef.meta?.className || "",
+                            isSticky && "z-10 border-l border-border"
+                          )}
+                        >
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </TableCell>
+                      );
+                    })}
                   </TableRow>
                 ))
               ) : (

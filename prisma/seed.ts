@@ -3,6 +3,7 @@ import { seedRoles } from "./seeds/roles";
 import { seedUsers } from "./seeds/users";
 import { seedSizes } from "./seeds/sizes";
 import { seedColors } from "./seeds/colors";
+import { seedCategories } from "./seeds/categories";
 
 const prisma = new PrismaClient();
 
@@ -13,6 +14,7 @@ async function main() {
   await seedRoles(prisma);
   await seedSizes(prisma);
   await seedColors();
+  await seedCategories(prisma);
   // await seedGroups(prisma);
   // await seedOrganizations(prisma);
   // await seedDepartments(prisma);
