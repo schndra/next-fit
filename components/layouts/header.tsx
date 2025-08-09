@@ -100,7 +100,7 @@ export function Header() {
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
-                  <Link href="/auth/signin">Sign In</Link>
+                  <Link href="/sign-in">Sign In</Link>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
