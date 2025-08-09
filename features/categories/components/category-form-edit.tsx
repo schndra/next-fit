@@ -48,6 +48,7 @@ import {
 import { useState, useEffect } from "react";
 import { ArrowLeft, Loader2, Trash2 } from "lucide-react";
 import Link from "next/link";
+import { ImageUpload } from "@/components/ui/image-upload";
 
 function CategoryForm({ categoryId }: { categoryId: string }) {
   const queryClient = useQueryClient();
@@ -251,16 +252,16 @@ function CategoryForm({ categoryId }: { categoryId: string }) {
                   name="img"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Category Image URL</FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder="https://example.com/category-image.jpg"
-                          {...field}
+                        <ImageUpload
+                          value={field.value}
+                          onChange={field.onChange}
+                          disabled={isPending}
+                          folder="categories"
+                          label="Category Image"
+                          description="Upload an image to represent this category (optional)"
                         />
                       </FormControl>
-                      <FormDescription>
-                        Optional: Add an image URL to represent this category
-                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
