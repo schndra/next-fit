@@ -5,7 +5,7 @@ import { OrdersList } from "@/features/checkout/components/orders-list";
 
 export default async function OrdersPage() {
   const session = await auth();
-  
+
   if (!session?.user?.id) {
     redirect("/sign-in?callbackUrl=/orders");
   }

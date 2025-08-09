@@ -60,7 +60,11 @@ export function ShippingAddressForm({
   );
   const { data: session } = useSession();
 
-  const { data: addresses, isLoading, error } = useUserAddresses(session?.user?.id);
+  const {
+    data: addresses,
+    isLoading,
+    error,
+  } = useUserAddresses(session?.user?.id);
   const saveAddressMutation = useSaveAddress();
   const updateAddressMutation = useUpdateAddress();
   const deleteAddressMutation = useDeleteAddress();
@@ -203,7 +207,9 @@ export function ShippingAddressForm({
           {/* Error state */}
           {error && (
             <div className="text-center py-6">
-              <p className="text-sm text-red-600">Failed to load addresses. Please try again.</p>
+              <p className="text-sm text-red-600">
+                Failed to load addresses. Please try again.
+              </p>
             </div>
           )}
 
@@ -276,7 +282,8 @@ export function ShippingAddressForm({
             <div className="text-center py-6 space-y-2">
               <Label className="text-sm font-medium">No Saved Addresses</Label>
               <p className="text-sm text-gray-600">
-                Please add your first shipping address to continue with checkout.
+                Please add your first shipping address to continue with
+                checkout.
               </p>
             </div>
           ) : null}
@@ -502,8 +509,8 @@ export function ShippingAddressForm({
 
           {/* Continue Button */}
           {selectedAddress && (
-            <Button 
-              onClick={() => onNext(selectedAddress)} 
+            <Button
+              onClick={() => onNext(selectedAddress)}
               className="w-full"
               disabled={!selectedAddress.id && !selectedAddress.address1}
             >

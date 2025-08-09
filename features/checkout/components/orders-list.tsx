@@ -1,17 +1,17 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { 
-  Package, 
-  Calendar, 
-  DollarSign,
-  Eye,
-  ShoppingBag
-} from "lucide-react";
+import { Package, Calendar, DollarSign, Eye, ShoppingBag } from "lucide-react";
 import { type Order } from "../actions/order.actions";
 
 interface OrdersListProps {
@@ -39,9 +39,7 @@ export function OrdersList({ orders }: OrdersListProps) {
           <p className="text-muted-foreground mb-6 text-center">
             When you place your first order, it will appear here.
           </p>
-          <Button onClick={() => router.push("/")}>
-            Start Shopping
-          </Button>
+          <Button onClick={() => router.push("/")}>Start Shopping</Button>
         </CardContent>
       </Card>
     );
@@ -64,14 +62,15 @@ export function OrdersList({ orders }: OrdersListProps) {
                     {new Date(order.created_at).toLocaleDateString()}
                   </span>
                   <span className="flex items-center gap-1">
-                    <DollarSign className="h-4 w-4" />
-                    ${order.total.toFixed(2)}
+                    <DollarSign className="h-4 w-4" />${order.total.toFixed(2)}
                   </span>
                 </CardDescription>
               </div>
               <div className="flex items-center gap-3">
-                <Badge 
-                  className={STATUS_COLORS[order.status as keyof typeof STATUS_COLORS]}
+                <Badge
+                  className={
+                    STATUS_COLORS[order.status as keyof typeof STATUS_COLORS]
+                  }
                   variant="secondary"
                 >
                   {order.status}
@@ -136,13 +135,19 @@ export function OrdersList({ orders }: OrdersListProps) {
                 <div>
                   <h4 className="font-medium mb-2">Shipping Address</h4>
                   <div className="text-sm text-muted-foreground">
-                    <div>{order.shipping_address.first_name} {order.shipping_address.last_name}</div>
                     <div>
-                      {order.shipping_address.address1}
-                      {order.shipping_address.address2 && `, ${order.shipping_address.address2}`}
+                      {order.shipping_address.first_name}{" "}
+                      {order.shipping_address.last_name}
                     </div>
                     <div>
-                      {order.shipping_address.city}, {order.shipping_address.state} {order.shipping_address.postal_code}
+                      {order.shipping_address.address1}
+                      {order.shipping_address.address2 &&
+                        `, ${order.shipping_address.address2}`}
+                    </div>
+                    <div>
+                      {order.shipping_address.city},{" "}
+                      {order.shipping_address.state}{" "}
+                      {order.shipping_address.postal_code}
                     </div>
                   </div>
                 </div>
