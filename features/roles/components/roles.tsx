@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-  Plus,
   Search,
   Filter,
   RefreshCw,
@@ -24,6 +23,7 @@ import { Input } from "@/components/ui/input";
 import { getAllRoles } from "../actions/roles.actions";
 import { RoleType, columns } from "./column";
 import { DataTable } from "../../../components/data-display/data-table";
+import { CreateRoleDialog } from "./create-role-dialog";
 
 const Roles = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -74,10 +74,7 @@ const Roles = () => {
             />
             Refresh
           </Button>
-          <Button>
-            <Plus className="h-4 w-4 mr-2" />
-            Add Role
-          </Button>
+          <CreateRoleDialog />
         </div>
       </div>
 

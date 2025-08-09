@@ -1,24 +1,8 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  MoreHorizontal,
-  Eye,
-  Edit,
-  Trash2,
-  Users,
-  Shield,
-  UserCheck,
-  ArrowUpDown,
-} from "lucide-react";
+import { Users, Shield, UserCheck, ArrowUpDown } from "lucide-react";
+import { RoleActions } from "./role-actions";
 
 export type RoleType = {
   id: string;
@@ -153,36 +137,7 @@ export const columns: ColumnDef<RoleType>[] = [
     enableSorting: false,
     cell: ({ row }) => {
       const role = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon">
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem>
-              <Eye className="mr-2 h-4 w-4" />
-              View Details
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Edit className="mr-2 h-4 w-4" />
-              Edit Role
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Users className="mr-2 h-4 w-4" />
-              Manage Users
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="text-red-600">
-              <Trash2 className="mr-2 h-4 w-4" />
-              Delete Role
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
+      return <RoleActions role={role} />;
     },
   },
 ];

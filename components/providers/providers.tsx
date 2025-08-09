@@ -4,6 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "./theme-provider";
 import { getQueryClient } from "./react-query-provider";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { Toaster } from "@/components/ui/sonner";
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
   const queryClient = getQueryClient();
@@ -17,7 +18,7 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
     >
       <QueryClientProvider client={queryClient}>
         {children}
-
+        <Toaster />
         <ReactQueryDevtools />
       </QueryClientProvider>
     </ThemeProvider>
