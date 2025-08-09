@@ -60,7 +60,8 @@ export type SerializedProduct = {
 
 // Function to serialize product data for client components
 export const serializeProduct = (product: any): SerializedProduct => {
-  return {
+  // Deep serialize to handle all Decimal objects and ensure proper JSON serialization
+  const serialized = {
     ...product,
     price:
       product.price instanceof Decimal ? Number(product.price) : product.price,
@@ -76,7 +77,13 @@ export const serializeProduct = (product: any): SerializedProduct => {
       product.weight instanceof Decimal
         ? Number(product.weight)
         : product.weight,
+    // Ensure dates are properly serialized
+    created_at: new Date(product.created_at),
+    updated_at: new Date(product.updated_at),
   };
+
+  // Use JSON.parse(JSON.stringify()) to ensure all nested objects are properly serialized
+  return JSON.parse(JSON.stringify(serialized));
 };
 
 // Function to calculate discount percentage

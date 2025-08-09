@@ -57,7 +57,10 @@ export async function getAllProducts(): Promise<SerializedProduct[]> {
       },
     });
 
-    return products.map(serializeProduct);
+    // Ensure proper serialization for all products
+    return products.map((product) =>
+      JSON.parse(JSON.stringify(serializeProduct(product)))
+    );
   } catch (error) {
     console.error("Error fetching products:", error);
     throw new Error("Failed to fetch products");
@@ -105,7 +108,11 @@ export async function getProductById(
 
     if (!product) return null;
 
-    return serializeProduct(product);
+    // Ensure proper serialization before returning
+    const serialized = serializeProduct(product);
+
+    // Double-check that no Decimal objects remain
+    return JSON.parse(JSON.stringify(serialized));
   } catch (error) {
     console.error("Error fetching product:", error);
     throw new Error("Failed to fetch product");
@@ -228,7 +235,8 @@ export async function createProduct(
     });
 
     revalidatePath("/admin/products");
-    return { success: true, data: serializeProduct(product) };
+    const serialized = serializeProduct(product);
+    return { success: true, data: JSON.parse(JSON.stringify(serialized)) };
   } catch (error) {
     console.error("Error creating product:", error);
     return { success: false, error: "Failed to create product" };
@@ -366,7 +374,8 @@ export async function updateProduct(
 
     revalidatePath("/admin/products");
     revalidatePath(`/admin/products/${validatedData.id}`);
-    return { success: true, data: serializeProduct(product) };
+    const serialized = serializeProduct(product);
+    return { success: true, data: JSON.parse(JSON.stringify(serialized)) };
   } catch (error) {
     console.error("Error updating product:", error);
     return { success: false, error: "Failed to update product" };
