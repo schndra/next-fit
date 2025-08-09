@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const signupSchema = z
+export const signupFormSchema = z
   .object({
     name: z
       .string()
@@ -56,7 +56,13 @@ export const signupSchema = z
 
 export const signInFormSchema = z.object({
   email: z.email("Invalid email"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
+      "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+    ),
 });
 
-export type SignupFormData = z.infer<typeof signupSchema>;
+export type SignupFormData = z.infer<typeof signupFormSchema>;

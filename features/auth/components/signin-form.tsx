@@ -6,9 +6,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import Link from "next/link";
-import { signInUser } from "@/lib/user.actions";
+import { signInUser } from "@/features/auth/actions/user.actions";
 import { useFormStatus } from "react-dom";
 import { useSearchParams } from "next/navigation";
+import { signInDefaultValues } from "@/lib/constants";
 
 const SigninForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -44,7 +45,7 @@ const SigninForm = () => {
               name="email"
               type="email"
               placeholder="Enter your email"
-              defaultValue={""}
+              defaultValue={signInDefaultValues.email}
               className="pl-10"
               autoComplete="email"
               required
@@ -61,7 +62,7 @@ const SigninForm = () => {
               name="password"
               type={showPassword ? "text" : "password"}
               placeholder="Enter your password"
-              defaultValue={""}
+              defaultValue={signInDefaultValues.password}
               className="pl-10 pr-10"
               autoComplete="password"
               required

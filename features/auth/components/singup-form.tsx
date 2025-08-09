@@ -1,68 +1,38 @@
 "use client";
 
-import { useState } from "react";
+import { useActionState, useState } from "react";
 import { useRouter } from "next/navigation";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 
 import { Eye, EyeOff, Mail, Lock, User, Phone, Calendar } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-// import { useToast } from "@/hooks/use-toast";
-import { SignupFormData, signupSchema } from "@/lib/validators";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { signUpUser } from "@/features/auth/actions/user.actions";
+import { useFormStatus } from "react-dom";
 
 const SingupForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const router = useRouter();
-  //   const { toast } = useToast();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch,
-  } = useForm<SignupFormData>({
-    resolver: zodResolver(signupSchema),
-    defaultValues: {
-      first_name: "",
-      last_name: "",
-      email: "",
-      password: "",
-      phone: "",
-    },
+  const [data, action] = useActionState(signUpUser, {
+    success: false,
+    message: "",
   });
 
-  //   const signupMutation = useMutation({
-  //     mutationFn: authService.signup,
-  //     onSuccess: (data) => {
-  //       toast({
-  //         title: "Account created successfully!",
-  //         description: "Please check your email to verify your account.",
-  //       });
-  //       router.push(
-  //         "/signin?message=Please verify your email before signing in"
-  //       );
-  //     },
-  //     onError: (error: any) => {
-  //       toast({
-  //         title: "Error creating account",
-  //         description: error.message || "Something went wrong. Please try again.",
-  //         variant: "destructive",
-  //       });
-  //     },
-  //   });
+  const SignUpButton = () => {
+    const { pending } = useFormStatus();
 
-  const onSubmit = (data: SignupFormData) => {
-    // signupMutation.mutate(data);
+    return (
+      <Button type="submit" className="w-full" disabled={pending}>
+        {pending ? "Creating Account..." : "Create Account"}
+      </Button>
+    );
   };
   return (
     <>
-      {" "}
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form action={action} className="space-y-4">
         {/* Name Fields */}
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-2">
@@ -71,17 +41,13 @@ const SingupForm = () => {
               <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
               <Input
                 id="first_name"
+                name="first_name"
                 type="text"
                 placeholder="John"
                 className="pl-10"
-                {...register("first_name")}
+                required
               />
             </div>
-            {errors.first_name && (
-              <p className="text-sm text-red-600">
-                {errors.first_name.message}
-              </p>
-            )}
           </div>
 
           <div className="space-y-2">
@@ -90,15 +56,13 @@ const SingupForm = () => {
               <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
               <Input
                 id="last_name"
+                name="last_name"
                 type="text"
                 placeholder="Doe"
                 className="pl-10"
-                {...register("last_name")}
+                required
               />
             </div>
-            {errors.last_name && (
-              <p className="text-sm text-red-600">{errors.last_name.message}</p>
-            )}
           </div>
         </div>
 
@@ -109,15 +73,13 @@ const SingupForm = () => {
             <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
             <Input
               id="name"
+              name="name"
               type="text"
               placeholder="John Doe"
               className="pl-10"
-              {...register("name")}
+              required
             />
           </div>
-          {errors.name && (
-            <p className="text-sm text-red-600">{errors.name.message}</p>
-          )}
         </div>
 
         {/* Email */}
@@ -127,15 +89,13 @@ const SingupForm = () => {
             <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
             <Input
               id="email"
+              name="email"
               type="email"
               placeholder="john@example.com"
               className="pl-10"
-              {...register("email")}
+              required
             />
           </div>
-          {errors.email && (
-            <p className="text-sm text-red-600">{errors.email.message}</p>
-          )}
         </div>
 
         {/* Phone */}
@@ -145,15 +105,12 @@ const SingupForm = () => {
             <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
             <Input
               id="phone"
+              name="phone"
               type="tel"
               placeholder="+1 (555) 123-4567"
               className="pl-10"
-              {...register("phone")}
             />
           </div>
-          {errors.phone && (
-            <p className="text-sm text-red-600">{errors.phone.message}</p>
-          )}
         </div>
 
         {/* Date of Birth */}
@@ -161,16 +118,8 @@ const SingupForm = () => {
           <Label htmlFor="dob">Date of Birth (Optional)</Label>
           <div className="relative">
             <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-            <Input
-              id="dob"
-              type="date"
-              className="pl-10"
-              {...register("dob")}
-            />
+            <Input id="dob" name="dob" type="date" className="pl-10" />
           </div>
-          {errors.dob && (
-            <p className="text-sm text-red-600">{errors.dob.message}</p>
-          )}
         </div>
 
         {/* Password */}
@@ -180,10 +129,11 @@ const SingupForm = () => {
             <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
             <Input
               id="password"
+              name="password"
               type={showPassword ? "text" : "password"}
               placeholder="Create a strong password"
               className="pl-10 pr-10"
-              {...register("password")}
+              required
             />
             <Button
               type="button"
@@ -199,9 +149,6 @@ const SingupForm = () => {
               )}
             </Button>
           </div>
-          {errors.password && (
-            <p className="text-sm text-red-600">{errors.password.message}</p>
-          )}
         </div>
 
         {/* Confirm Password */}
@@ -211,10 +158,11 @@ const SingupForm = () => {
             <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
             <Input
               id="confirmPassword"
+              name="confirmPassword"
               type={showConfirmPassword ? "text" : "password"}
               placeholder="Confirm your password"
               className="pl-10 pr-10"
-              {...register("confirmPassword")}
+              required
             />
             <Button
               type="button"
@@ -230,17 +178,18 @@ const SingupForm = () => {
               )}
             </Button>
           </div>
-          {errors.confirmPassword && (
-            <p className="text-sm text-red-600">
-              {errors.confirmPassword.message}
-            </p>
-          )}
         </div>
 
         {/* Terms and Conditions */}
         <div className="flex items-center space-x-2">
-          <Checkbox id="terms" {...register("acceptTerms")} />
-          <Label htmlFor="terms" className="text-sm">
+          <input
+            type="checkbox"
+            id="acceptTerms"
+            name="acceptTerms"
+            required
+            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+          />
+          <Label htmlFor="acceptTerms" className="text-sm">
             I agree to the{" "}
             <Link href="/terms" className="text-blue-600 hover:text-blue-500">
               Terms of Service
@@ -251,29 +200,30 @@ const SingupForm = () => {
             </Link>
           </Label>
         </div>
-        {errors.acceptTerms && (
-          <p className="text-sm text-red-600">{errors.acceptTerms.message}</p>
-        )}
 
         {/* Marketing Emails */}
         {/* <div className="flex items-center space-x-2">
-                <Checkbox id="marketing" {...register("acceptMarketing")} />
-                <Label htmlFor="marketing" className="text-sm">
-                  I would like to receive marketing emails about new products
-                  and special offers
-                </Label>
-              </div> */}
+          <input
+            type="checkbox"
+            id="acceptMarketing"
+            name="acceptMarketing"
+            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+          />
+          <Label htmlFor="acceptMarketing" className="text-sm">
+            I would like to receive marketing emails about new products and
+            special offers
+          </Label>
+        </div> */}
 
-        <Button
-          type="submit"
-          className="w-full"
-          // disabled={signupMutation.isPending}
-        >
-          {/* {signupMutation.isPending
-                  ? "Creating Account..."
-                  : "Create Account"} */}
-          "Create Account"
-        </Button>
+        <SignUpButton />
+
+        {data && !data.success && (
+          <div className="text-center text-destructive">{data.message}</div>
+        )}
+
+        {data && data.success && (
+          <div className="text-center text-green-600">{data.message}</div>
+        )}
       </form>
     </>
   );

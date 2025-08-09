@@ -10,7 +10,7 @@ import { Button } from "./ui/button";
 import { User } from "lucide-react";
 import { auth } from "@/auth";
 import Link from "next/link";
-import { signOutUser } from "@/lib/user.actions";
+import { signOutUser } from "@/features/auth/actions/user.actions";
 
 const StoreUserButton = async () => {
   const session = await auth();
