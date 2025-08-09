@@ -176,7 +176,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async session({ session, user, trigger, token }: any) {
       // Set the user ID from the token
       session.user.id = token.sub;
+      session.user.roles = token.roles;
+      session.user.name = token.name;
 
+      console.log(token);
       // if there is an update set the user name
       if (trigger === "update" && user) {
         session.user.name = user.name;
@@ -184,6 +187,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
 
       return session;
+    },
+
+    async jwt({ token, user, trigger, session }: any) {
+      // If user is signed in, add their info to the token
+      if (user) {
+        token.roles = user.roles;
+      }
+
+      return token;
     },
   },
 });
