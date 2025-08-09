@@ -18,7 +18,6 @@ import { columns, SizeType } from "./column";
 import { CreateSizeDialog } from "./create-size-dialog";
 import { EditSizeDialog } from "./edit-size-dialog";
 import { DeleteSizeDialog } from "./delete-size-dialog";
-import { ViewSizeDialog } from "./view-size-dialog";
 
 export default function Sizes() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -191,22 +190,6 @@ export default function Sizes() {
           size={deletingSize}
           open={!!deletingSize}
           onClose={() => setDeletingSize(null)}
-        />
-      )}
-
-      {viewingSizeId && (
-        <ViewSizeDialog
-          sizeId={viewingSizeId}
-          open={!!viewingSizeId}
-          onClose={() => setViewingSizeId(null)}
-          onEdit={(size) => {
-            setViewingSizeId(null);
-            setEditingSize(size);
-          }}
-          onDelete={(size) => {
-            setViewingSizeId(null);
-            setDeletingSize(size);
-          }}
         />
       )}
     </div>
