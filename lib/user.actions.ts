@@ -24,11 +24,6 @@ export async function signInUser(prevState: unknown, formData: FormData) {
 }
 
 // Sign user out
-export async function signOutUser() {
-  try {
-    await signOut();
-    return { success: true, message: "Successfully signed out" };
-  } catch (error) {
-    return { success: false, message: "Failed to sign out" };
-  }
+export async function signOutUser(formData: FormData) {
+  await signOut();
 }
