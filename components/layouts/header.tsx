@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Search, Heart, Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ModeToggle } from "../mode-toggle";
-import StoreUserButton from "../user-button";
+import { UserButton } from "../user-button";
 import { CartDropdown } from "@/features/store/components/cart-dropdown";
 
 export function Header() {
@@ -64,7 +64,7 @@ export function Header() {
             <CartDropdown />
 
             {/* User Menu */}
-            <StoreUserButton />
+            <UserButton />
 
             {/* Mobile Menu */}
             <Sheet>
