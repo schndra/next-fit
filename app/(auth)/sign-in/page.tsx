@@ -25,6 +25,7 @@ export default async function SignInPage(props: {
   const session = await auth();
 
   if (session) {
+    console.log("USER_SESSION", session);
     return redirect(callbackUrl || "/");
   }
 

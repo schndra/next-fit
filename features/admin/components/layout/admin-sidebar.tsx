@@ -25,9 +25,9 @@ import {
 
 const navigation = [
   { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
-  { name: "Products", href: "/admin/products", icon: Package, badge: "1,234" },
-  { name: "Orders", href: "/admin/orders", icon: ShoppingCart, badge: "23" },
-  { name: "Customers", href: "/admin/customers", icon: Users },
+  { name: "Products", href: "/admin/products", icon: Package },
+  { name: "Orders", href: "/admin/orders", icon: ShoppingCart },
+  { name: "Users", href: "/admin/users", icon: Users },
   // { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
   { name: "Categories", href: "/admin/categories", icon: Tag },
   { name: "Sizes", href: "/admin/sizes", icon: Ruler },
@@ -86,11 +86,11 @@ export function AdminSidebar() {
                 {!collapsed && (
                   <>
                     <span className="flex-1">{item.name}</span>
-                    {item.badge && (
+                    {/* {item.badge && (
                       <Badge variant="secondary" className="text-xs">
                         {item.badge}
                       </Badge>
-                    )}
+                    )} */}
                   </>
                 )}
               </div>
