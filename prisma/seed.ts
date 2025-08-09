@@ -4,6 +4,7 @@ import { seedUsers } from "./seeds/users";
 import { seedSizes } from "./seeds/sizes";
 import { seedColors } from "./seeds/colors";
 import { seedCategories } from "./seeds/categories";
+import { seedCoupons } from "./seeds/coupons";
 
 const prisma = new PrismaClient();
 
@@ -20,6 +21,7 @@ async function main() {
   // await seedDepartments(prisma);
   // await seedDivisions(prisma);
   await seedUsers(prisma);
+  await seedCoupons();
   // await seedTransferTypesLive(prisma);
   // await seedProducts(prisma);
   // await seedTransferTypes(prisma);
