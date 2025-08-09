@@ -12,6 +12,11 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("🌱 Starting database seeding...");
 
+  // Delete data in reverse dependency order to avoid foreign key constraints
+  await prisma.image.deleteMany({});
+  await prisma.product.deleteMany({});
+  console.log("🗑️  Cleared existing products and images");
+
   // Delete coupons first to avoid foreign key constraints
   await prisma.coupon.deleteMany({});
   console.log("🗑️  Cleared existing coupons");
