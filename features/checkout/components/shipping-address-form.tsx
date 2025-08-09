@@ -34,7 +34,8 @@ import {
 } from "../hooks/use-checkout";
 import { shippingAddressSchema } from "../schema";
 import { formatAddressOneLine } from "../utils";
-import type { ShippingAddress } from "../types";
+import { type ShippingAddressData } from "../schema";
+import { type ShippingAddress } from "../types";
 import type { z } from "zod";
 
 type ShippingAddressFormData = z.infer<typeof shippingAddressSchema>;
@@ -42,8 +43,9 @@ type ShippingAddressFormData = z.infer<typeof shippingAddressSchema>;
 interface ShippingAddressFormProps {
   selectedAddress?: ShippingAddress;
   onAddressSelect: (address: ShippingAddress) => void;
-  onNext: () => void;
+  onNext: (address: ShippingAddress) => void;
   onCancel?: () => void;
+  defaultValues?: ShippingAddress;
 }
 
 export function ShippingAddressForm({
@@ -58,7 +60,7 @@ export function ShippingAddressForm({
   );
   const { data: session } = useSession();
 
-  const { data: addresses, isLoading } = useUserAddresses(session?.user?.id);
+  const { data: addresses, isLoading, error } = useUserAddresses(session?.user?.id);
   const saveAddressMutation = useSaveAddress();
   const updateAddressMutation = useUpdateAddress();
   const deleteAddressMutation = useDeleteAddress();
@@ -191,8 +193,22 @@ export function ShippingAddressForm({
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
+          {/* Loading state */}
+          {isLoading && (
+            <div className="text-center py-6">
+              <p className="text-sm text-gray-600">Loading addresses...</p>
+            </div>
+          )}
+
+          {/* Error state */}
+          {error && (
+            <div className="text-center py-6">
+              <p className="text-sm text-red-600">Failed to load addresses. Please try again.</p>
+            </div>
+          )}
+
           {/* Saved Addresses */}
-          {addresses && addresses.length > 0 && (
+          {!isLoading && !error && addresses && addresses.length > 0 ? (
             <div className="space-y-3">
               <Label className="text-sm font-medium">Saved Addresses</Label>
               {addresses.map((address) => (
@@ -256,7 +272,14 @@ export function ShippingAddressForm({
                 </div>
               ))}
             </div>
-          )}
+          ) : !isLoading && !error ? (
+            <div className="text-center py-6 space-y-2">
+              <Label className="text-sm font-medium">No Saved Addresses</Label>
+              <p className="text-sm text-gray-600">
+                Please add your first shipping address to continue with checkout.
+              </p>
+            </div>
+          ) : null}
 
           {addresses && addresses.length > 0 && <Separator />}
 
@@ -478,8 +501,12 @@ export function ShippingAddressForm({
           </Dialog>
 
           {/* Continue Button */}
-          {selectedAddress?.id && (
-            <Button onClick={onNext} className="w-full">
+          {selectedAddress && (
+            <Button 
+              onClick={() => onNext(selectedAddress)} 
+              className="w-full"
+              disabled={!selectedAddress.id && !selectedAddress.address1}
+            >
               Continue to Payment
             </Button>
           )}

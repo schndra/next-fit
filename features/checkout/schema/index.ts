@@ -43,8 +43,47 @@ export const orderCreateSchema = z.object({
   total: z.number().min(0),
 });
 
+// Payment Method Schema
+export const paymentMethodSchema = z.object({
+  type: z.enum(["visa", "mastercard", "amex"]),
+  card_number: z
+    .string()
+    .min(16, "Card number must be 16 digits")
+    .max(19, "Card number is too long")
+    .regex(/^[0-9\s]+$/, "Card number must contain only numbers"),
+  expiry_month: z
+    .string()
+    .min(1, "Month is required")
+    .max(2, "Invalid month")
+    .regex(/^(0[1-9]|1[0-2])$/, "Invalid month"),
+  expiry_year: z
+    .string()
+    .min(4, "Year must be 4 digits")
+    .max(4, "Year must be 4 digits")
+    .regex(/^20[0-9]{2}$/, "Invalid year"),
+  cvv: z
+    .string()
+    .min(3, "CVV must be 3-4 digits")
+    .max(4, "CVV must be 3-4 digits")
+    .regex(/^[0-9]+$/, "CVV must contain only numbers"),
+  cardholder_name: z.string().min(1, "Cardholder name is required").max(100),
+});
+
+// Order Placement Schema
+export const orderPlacementSchema = z.object({
+  shipping_address_id: z.string().min(1, "Shipping address is required"),
+  billing_address_id: z.string().optional(),
+  payment_method: paymentMethodSchema,
+  shipping_method: z
+    .enum(["standard", "express", "overnight"])
+    .default("standard"),
+  notes: z.string().max(500).optional(),
+});
+
 // Types from schemas
 export type ShippingAddressData = z.infer<typeof shippingAddressSchema>;
 export type BillingAddressData = z.infer<typeof billingAddressSchema>;
 export type CheckoutFormData = z.infer<typeof checkoutDataSchema>;
 export type OrderCreateData = z.infer<typeof orderCreateSchema>;
+export type PaymentMethodData = z.infer<typeof paymentMethodSchema>;
+export type OrderPlacementData = z.infer<typeof orderPlacementSchema>;
