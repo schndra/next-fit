@@ -15,11 +15,17 @@ import SigninForm from "@/features/auth/components/signin-form";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
-export default async function SignInPage() {
+export default async function SignInPage(props: {
+  searchParams: Promise<{
+    callbackUrl: string;
+  }>;
+}) {
+  const { callbackUrl } = await props.searchParams;
+
   const session = await auth();
 
   if (session) {
-    return redirect("/");
+    return redirect(callbackUrl || "/");
   }
 
   return (

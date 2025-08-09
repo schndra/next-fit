@@ -8,6 +8,7 @@ import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import Link from "next/link";
 import { signInUser } from "@/lib/user.actions";
 import { useFormStatus } from "react-dom";
+import { useSearchParams } from "next/navigation";
 
 const SigninForm = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -16,6 +17,9 @@ const SigninForm = () => {
     success: false,
     message: "",
   });
+
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
 
   const SignInButton = () => {
     const { pending } = useFormStatus();
@@ -27,10 +31,10 @@ const SigninForm = () => {
     );
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {};
   return (
     <>
       <form action={action} className="space-y-4">
+        <input type="hidden" name="callbackUrl" value={callbackUrl} />
         <div className="space-y-2">
           <Label htmlFor="email">Email</Label>
           <div className="relative">
