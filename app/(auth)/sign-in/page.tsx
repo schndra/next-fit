@@ -47,7 +47,7 @@ export default function SignInPage() {
           <p className="mt-2 text-sm text-gray-600">
             Or{" "}
             <Link
-              href="//sign-up"
+              href="/sign-up"
               className="font-medium text-blue-600 hover:text-blue-500"
             >
               create a new account
@@ -190,7 +190,7 @@ export default function SignInPage() {
           <p className="text-sm text-gray-600">
             Don't have an account?{" "}
             <Link
-              href="//sign-up"
+              href="/sign-up"
               className="font-medium text-blue-600 hover:text-blue-500"
             >
               Sign up for free
