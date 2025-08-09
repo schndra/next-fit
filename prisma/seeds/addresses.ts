@@ -18,7 +18,20 @@ export async function seedAddresses(prisma: PrismaClient) {
   }
 
   // Sample addresses for each user
-  const addressData = [
+  const addressData: Array<{
+    user_id: string;
+    first_name: string;
+    last_name: string;
+    company?: string;
+    address1: string;
+    address2?: string;
+    city: string;
+    state: string;
+    postal_code: string;
+    country: string;
+    phone?: string;
+    is_default: boolean;
+  }> = [
     {
       user_id: users[0].id, // admin@example.com
       first_name: "Admin",

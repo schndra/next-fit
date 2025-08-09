@@ -32,7 +32,7 @@ export interface ShippingAddressData {
   postal_code: string;
   country: string;
   phone?: string;
-  is_default: boolean;
+  is_default?: boolean;
 }
 
 export interface BillingAddress extends ShippingAddress {

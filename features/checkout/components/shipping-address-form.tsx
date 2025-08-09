@@ -32,9 +32,12 @@ import {
   useUpdateAddress,
   useDeleteAddress,
 } from "../hooks/use-checkout";
-import { shippingAddressSchema, type ShippingAddressData } from "../schema";
+import { shippingAddressSchema } from "../schema";
 import { formatAddressOneLine } from "../utils";
 import type { ShippingAddress } from "../types";
+import type { z } from "zod";
+
+type ShippingAddressFormData = z.infer<typeof shippingAddressSchema>;
 
 interface ShippingAddressFormProps {
   selectedAddress?: ShippingAddress;
@@ -60,8 +63,8 @@ export function ShippingAddressForm({
   const updateAddressMutation = useUpdateAddress();
   const deleteAddressMutation = useDeleteAddress();
 
-  const form = useForm<ShippingAddressData>({
-    resolver: zodResolver(shippingAddressSchema),
+  const form = useForm<ShippingAddressFormData>({
+    resolver: zodResolver(shippingAddressSchema) as any,
     defaultValues: {
       first_name: "",
       last_name: "",
@@ -77,7 +80,7 @@ export function ShippingAddressForm({
     },
   });
 
-  const handleAddressSubmit = async (data: ShippingAddressData) => {
+  const handleAddressSubmit = async (data: ShippingAddressFormData) => {
     if (!session?.user?.id) return;
 
     try {

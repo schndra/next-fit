@@ -12,7 +12,7 @@ export const shippingAddressSchema = z.object({
   postal_code: z.string().min(1, "Postal code is required").max(20),
   country: z.string().min(1, "Country is required").max(100),
   phone: z.string().max(20).optional(),
-  is_default: z.boolean().default(false),
+  is_default: z.boolean().optional().default(false),
 });
 
 // Billing Address Schema (extends shipping with same_as_shipping option)

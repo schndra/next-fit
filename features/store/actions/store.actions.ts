@@ -44,6 +44,7 @@ export async function getFeaturedProducts(): Promise<StoreProduct[]> {
           ? Number(product.compare_price)
           : undefined,
         slug: product.slug,
+        quantity: product.quantity,
         images: product.images.map((image) => ({
           id: image.id,
           url: image.url,
@@ -188,6 +189,7 @@ export async function getProducts(filters: ProductFilters = {}): Promise<{
             ? Number(product.compare_price)
             : undefined,
           slug: product.slug,
+          quantity: product.quantity,
           images: product.images.map((image) => ({
             id: image.id,
             url: image.url,
@@ -382,6 +384,7 @@ export async function getRelatedProducts(
       compare_price: product.compare_price
         ? Number(product.compare_price)
         : undefined,
+      quantity: product.quantity,
       category: product.category,
       images: product.images.map((img) => ({
         id: img.id,
