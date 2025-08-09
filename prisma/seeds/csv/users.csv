@@ -1,3 +1,8 @@
 email,password,first_name,last_name,mobile,roles
 "admin@example.com","Admin@123","Admin","User","1234567890","ROLE_ADMIN|ROLE_USER"
 "user@example.com","Admin@123","Regular","User","9876543210","ROLE_USER"
+"john.doe@example.com","User@123","John","Doe","1111111111","ROLE_USER"
+"jane.smith@example.com","User@123","Jane","Smith","2222222222","ROLE_USER"
+"mike.johnson@example.com","User@123","Mike","Johnson","3333333333","ROLE_USER"
+"sarah.wilson@example.com","User@123","Sarah","Wilson","4444444444","ROLE_USER"
+"david.brown@example.com","User@123","David","Brown","5555555555","ROLE_USER"

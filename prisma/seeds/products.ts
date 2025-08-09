@@ -1,5 +1,61 @@
 import { PrismaClient } from "../../app/generated/prisma";
 
+// Sample reviews data for products
+const sampleReviews = [
+  {
+    rating: 5,
+    title: "Excellent quality!",
+    comment:
+      "Amazing product, highly recommended. Great value for money and excellent build quality.",
+  },
+  {
+    rating: 4,
+    title: "Very good",
+    comment:
+      "Good product overall. Fast delivery and as described. Would buy again.",
+  },
+  {
+    rating: 5,
+    title: "Love it!",
+    comment:
+      "Perfect! Exactly what I was looking for. Great customer service too.",
+  },
+  {
+    rating: 4,
+    title: "Good purchase",
+    comment: "Satisfied with the quality. Good packaging and quick shipping.",
+  },
+  {
+    rating: 3,
+    title: "Average",
+    comment:
+      "It's okay, does the job but nothing special. Could be better for the price.",
+  },
+  {
+    rating: 5,
+    title: "Outstanding!",
+    comment:
+      "Exceeded my expectations. Top quality material and excellent finish.",
+  },
+  {
+    rating: 4,
+    title: "Recommended",
+    comment: "Good value product. Works as expected and arrived on time.",
+  },
+  {
+    rating: 5,
+    title: "Perfect!",
+    comment:
+      "Couldn't be happier with this purchase. Will definitely shop here again.",
+  },
+];
+
+// Helper function to get random reviews for a product
+function getRandomReviews(count: number = 3) {
+  const shuffled = [...sampleReviews].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, count);
+}
+
 const productsData = [
   {
     title: "Premium Wireless Headphones",
@@ -181,7 +237,11 @@ export async function seedProducts(prisma: PrismaClient) {
     return;
   }
 
-  // Clear existing products and images
+  // Get all users for creating reviews
+  const allUsers = await prisma.user.findMany();
+
+  // Clear existing products, images, and reviews
+  await prisma.review.deleteMany({});
   await prisma.image.deleteMany({});
   await prisma.product.deleteMany({});
 
@@ -221,6 +281,27 @@ export async function seedProducts(prisma: PrismaClient) {
           url: imageData.url,
           alt: imageData.alt,
           sort_order: imageData.sort_order,
+          product_id: product.id,
+        },
+      });
+    }
+
+    // Create fake reviews for the product
+    const reviewCount = Math.floor(Math.random() * 4) + 2; // 2-5 reviews per product
+    const reviews = getRandomReviews(reviewCount);
+
+    for (let i = 0; i < reviews.length && i < allUsers.length; i++) {
+      const reviewData = reviews[i];
+      const reviewUser = allUsers[i % allUsers.length]; // Cycle through users
+
+      await prisma.review.create({
+        data: {
+          rating: reviewData.rating,
+          title: reviewData.title,
+          comment: reviewData.comment,
+          is_verified: Math.random() > 0.3, // 70% chance of being verified
+          is_approved: true, // All fake reviews are approved
+          user_id: reviewUser.id,
           product_id: product.id,
         },
       });
