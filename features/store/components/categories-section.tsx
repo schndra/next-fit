@@ -60,18 +60,20 @@ export function CategoriesSection() {
             >
               <Card className="hover:shadow-lg transition-shadow cursor-pointer">
                 <CardContent className="p-4 text-center">
-                  <Image
-                    src={
-                      category.img?.startsWith("http") ||
-                      category.img?.startsWith("/")
-                        ? category.img
-                        : "/placeholder.svg"
-                    }
-                    alt={category.title}
-                    width={80}
-                    height={80}
-                    className="mx-auto mb-3 rounded-lg"
-                  />
+                  <div className="w-20 h-20 mx-auto mb-3 rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center">
+                    <Image
+                      src={
+                        category.img?.startsWith("http") ||
+                        category.img?.startsWith("/")
+                          ? category.img
+                          : "/placeholder.svg"
+                      }
+                      alt={category.title}
+                      width={80}
+                      height={80}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                   <h3 className="font-semibold mb-1">{category.title}</h3>
                   <p className="text-sm text-muted-foreground">
                     {category._count.products} items
