@@ -229,9 +229,15 @@ export function CartDropdown({
                         View Cart
                       </Button>
                     </Link>
-                    <Button className="flex-1" size="sm">
-                      Checkout
-                    </Button>
+                    <Link
+                      href="/checkout"
+                      className="flex-1"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      <Button className="w-full" size="sm">
+                        Checkout
+                      </Button>
+                    </Link>
                   </div>
                 </div>
               </>

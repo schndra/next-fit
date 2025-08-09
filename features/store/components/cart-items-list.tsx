@@ -213,7 +213,9 @@ export function CartItemsList({ userId }: CartItemsListProps) {
                   Continue Shopping
                 </Button>
               </Link>
-              <Button className="flex-1">Proceed to Checkout</Button>
+              <Link href="/checkout" className="flex-1">
+                <Button className="w-full">Proceed to Checkout</Button>
+              </Link>
             </div>
           </div>
         </CardContent>
