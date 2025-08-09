@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -34,19 +35,57 @@ import {
   updateCouponSchema,
   COUPON_TYPES,
 } from "../schema/coupon.schemas";
-import { createCoupon, updateCoupon } from "../actions/coupons.actions";
+import {
+  createCoupon,
+  updateCoupon,
+  getCouponDetails,
+} from "../actions/coupons.actions";
 import { CouponType } from "./column";
 
 interface CouponFormEditProps {
-  coupon?: CouponType;
-  mode: "create" | "edit";
+  couponId: string;
 }
 
-export const CouponFormEdit = ({ coupon, mode }: CouponFormEditProps) => {
+export const CouponFormEdit = ({ couponId }: CouponFormEditProps) => {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  const queryClient = useQueryClient();
 
-  const isEditMode = mode === "edit" && coupon;
+  const isNewCoupon = couponId === "new";
+
+  const { data: coupon } = useQuery({
+    queryKey: ["coupon", couponId],
+    queryFn: () => getCouponDetails(couponId),
+    enabled: !isNewCoupon, // Only fetch if not creating new coupon
+  });
+
+  const isEditMode = !isNewCoupon && coupon;
+
+  const toastErrorMsg = coupon ? "editing" : "creating";
+  const toastSuccessMsg = coupon ? "updated" : "created";
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: (values: CreateCouponInput | UpdateCouponInput) =>
+      coupon
+        ? updateCoupon({ ...values, id: couponId } as UpdateCouponInput)
+        : createCoupon(values as CreateCouponInput),
+    onSuccess: (result) => {
+      if (!result.success) {
+        toast.error(`Error ${toastErrorMsg} coupon. ${result.error}`);
+        return;
+      }
+      toast.success(`Coupon ${toastSuccessMsg}! 🎉 Keep up the great work!`);
+      // Invalidate queries
+      queryClient.invalidateQueries({ queryKey: ["coupons"] });
+      if (!isNewCoupon) {
+        queryClient.invalidateQueries({ queryKey: ["coupon", couponId] });
+      }
+      router.push("/admin/coupons");
+    },
+  });
+
+  const title = coupon ? "Edit coupon" : "Create coupon";
+  const description = coupon ? "Edit a coupon." : "Add a new coupon";
+  const action = coupon ? "Save changes" : "Create";
 
   const form = useForm<CreateCouponInput | UpdateCouponInput>({
     resolver: zodResolver(isEditMode ? updateCouponSchema : createCouponSchema),
@@ -86,31 +125,8 @@ export const CouponFormEdit = ({ coupon, mode }: CouponFormEditProps) => {
 
   const selectedType = form.watch("type");
 
-  const onSubmit = async (data: CreateCouponInput | UpdateCouponInput) => {
-    try {
-      setIsLoading(true);
-
-      const result = isEditMode
-        ? await updateCoupon(data as UpdateCouponInput)
-        : await createCoupon(data as CreateCouponInput);
-
-      if (result.success) {
-        toast.success(
-          isEditMode
-            ? "Coupon updated successfully"
-            : "Coupon created successfully"
-        );
-        router.push("/admin/coupons");
-        router.refresh();
-      } else {
-        toast.error(result.error || "Failed to save coupon");
-      }
-    } catch (error) {
-      console.error("Error saving coupon:", error);
-      toast.error("An unexpected error occurred");
-    } finally {
-      setIsLoading(false);
-    }
+  const onSubmit = (data: CreateCouponInput | UpdateCouponInput) => {
+    mutate(data);
   };
 
   const onCancel = () => {
@@ -121,14 +137,8 @@ export const CouponFormEdit = ({ coupon, mode }: CouponFormEditProps) => {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">
-          {isEditMode ? "Edit Coupon" : "Create New Coupon"}
-        </h1>
-        <p className="text-muted-foreground">
-          {isEditMode
-            ? "Update the coupon details below"
-            : "Fill in the details to create a new discount coupon"}
-        </p>
+        <h1 className="text-3xl font-bold tracking-tight">{title}</h1>
+        <p className="text-muted-foreground">{description}</p>
       </div>
 
       <Form {...form}>
@@ -516,10 +526,10 @@ export const CouponFormEdit = ({ coupon, mode }: CouponFormEditProps) => {
 
           {/* Form Actions */}
           <div className="flex items-center gap-4 pt-6 border-t">
-            <Button type="submit" disabled={isLoading}>
-              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            <Button type="submit" disabled={isPending}>
+              {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               <Save className="mr-2 h-4 w-4" />
-              {isEditMode ? "Update Coupon" : "Create Coupon"}
+              {action}
             </Button>
             <Button type="button" variant="outline" onClick={onCancel}>
               <X className="mr-2 h-4 w-4" />
