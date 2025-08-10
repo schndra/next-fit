@@ -1,5 +1,9 @@
 import { checkAdminAuth } from "@/lib/admin-auth";
-import { QueryClient, dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import {
+  QueryClient,
+  dehydrate,
+  HydrationBoundary,
+} from "@tanstack/react-query";
 import {
   getDashboardStats,
   getRecentOrders,
