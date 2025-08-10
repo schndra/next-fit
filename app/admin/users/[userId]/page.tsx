@@ -1,3 +1,4 @@
+import { checkAdminAuth } from "@/lib/admin-auth";
 import { Suspense } from "react";
 import {
   dehydrate,
@@ -18,6 +19,9 @@ interface UserPageProps {
 }
 
 export default async function UserPage({ params }: UserPageProps) {
+  // Check admin authentication
+  await checkAdminAuth();
+
   const { userId } = params;
   const queryClient = new QueryClient();
 

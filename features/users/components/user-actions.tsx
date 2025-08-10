@@ -5,10 +5,22 @@ import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {
+  DropdownMenu,
+  DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Edit, Trash2, Shield, ShieldOff, Mail, MailCheck } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Edit,
+  Trash2,
+  Shield,
+  ShieldOff,
+  Mail,
+  MailCheck,
+  MoreHorizontal,
+} from "lucide-react";
 import Link from "next/link";
 import { UserType } from "@/features/users/schema/user.schemas";
 import { updateUser, deleteUser } from "@/features/users/actions/users.actions";
@@ -81,45 +93,54 @@ export function UserActions({ user }: UserActionsProps) {
 
   return (
     <>
-      <DropdownMenuItem asChild>
-        <Link href={`/admin/users/${user.id}`}>
-          <Edit className="mr-2 h-4 w-4" />
-          Edit User
-        </Link>
-      </DropdownMenuItem>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="icon">
+            <MoreHorizontal className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem asChild>
+            <Link href={`/admin/users/${user.id}`}>
+              <Edit className="mr-2 h-4 w-4" />
+              Edit User
+            </Link>
+          </DropdownMenuItem>
 
-      {!user.email_verified && (
-        <DropdownMenuItem onClick={handleVerifyEmail}>
-          <MailCheck className="mr-2 h-4 w-4" />
-          Verify Email
-        </DropdownMenuItem>
-      )}
+          {!user.email_verified && (
+            <DropdownMenuItem onClick={handleVerifyEmail}>
+              <MailCheck className="mr-2 h-4 w-4" />
+              Verify Email
+            </DropdownMenuItem>
+          )}
 
-      {user.email_verified && (
-        <DropdownMenuItem onClick={handleUnverifyEmail}>
-          <Mail className="mr-2 h-4 w-4" />
-          Unverify Email
-        </DropdownMenuItem>
-      )}
+          {user.email_verified && (
+            <DropdownMenuItem onClick={handleUnverifyEmail}>
+              <Mail className="mr-2 h-4 w-4" />
+              Unverify Email
+            </DropdownMenuItem>
+          )}
 
-      <DropdownMenuSeparator />
+          <DropdownMenuSeparator />
 
-      {canDelete && (
-        <DropdownMenuItem
-          onClick={() => setShowDeleteDialog(true)}
-          className="text-red-600"
-        >
-          <Trash2 className="mr-2 h-4 w-4" />
-          Delete User
-        </DropdownMenuItem>
-      )}
+          {canDelete && (
+            <DropdownMenuItem
+              onClick={() => setShowDeleteDialog(true)}
+              className="text-red-600"
+            >
+              <Trash2 className="mr-2 h-4 w-4" />
+              Delete User
+            </DropdownMenuItem>
+          )}
 
-      {!canDelete && (
-        <DropdownMenuItem disabled className="text-muted-foreground">
-          <Trash2 className="mr-2 h-4 w-4" />
-          Cannot Delete
-        </DropdownMenuItem>
-      )}
+          {!canDelete && (
+            <DropdownMenuItem disabled className="text-muted-foreground">
+              <Trash2 className="mr-2 h-4 w-4" />
+              Cannot Delete
+            </DropdownMenuItem>
+          )}
+        </DropdownMenuContent>
+      </DropdownMenu>
 
       <DeleteUserDialog
         user={user}

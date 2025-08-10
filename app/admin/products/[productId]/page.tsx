@@ -1,3 +1,4 @@
+import { checkAdminAuth } from "@/lib/admin-auth";
 import { getQueryClient } from "@/components/providers/react-query-provider";
 import { getProductDetails } from "@/features/products/actions/products.actions";
 import { getAllCategories } from "@/features/categories/actions/categories.actions";
@@ -12,6 +13,9 @@ interface ProductPageProps {
 }
 
 const ProductPage = async ({ params }: ProductPageProps) => {
+  // Check admin authentication
+  await checkAdminAuth();
+
   const { productId } = await params;
   const queryClient = getQueryClient();
 

@@ -1,9 +1,13 @@
+import { checkAdminAuth } from "@/lib/admin-auth";
 import { getQueryClient } from "@/components/providers/react-query-provider";
 import { getAllProducts } from "@/features/products/actions/products.actions";
 import Products from "@/features/products/components/products";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 const ProductsPage = async () => {
+  // Check admin authentication
+  await checkAdminAuth();
+
   const queryClient = getQueryClient();
 
   // Prefetch products data

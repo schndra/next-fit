@@ -1,9 +1,13 @@
+import { checkAdminAuth } from "@/lib/admin-auth";
 import { getQueryClient } from "@/components/providers/react-query-provider";
 import { getAllColors } from "@/features/colors/actions/colors.actions";
 import Colors from "@/features/colors/components/colors";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 const ColorsPage = async () => {
+  // Check admin authentication
+  await checkAdminAuth();
+
   const queryClient = getQueryClient();
 
   // Prefetch colors data for instant loading

@@ -1,3 +1,4 @@
+import { checkAdminAuth } from "@/lib/admin-auth";
 import {
   Card,
   CardContent,
@@ -52,7 +53,10 @@ const stats = [
   },
 ];
 
-export default function AdminDashboard() {
+export default async function AdminDashboard() {
+  // Check admin authentication
+  await checkAdminAuth();
+
   return (
     <div className="space-y-6">
       {/* Header */}

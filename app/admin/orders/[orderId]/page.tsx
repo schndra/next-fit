@@ -1,3 +1,4 @@
+import { checkAdminAuth } from "@/lib/admin-auth";
 import { getQueryClient } from "@/components/providers/react-query-provider";
 import { getOrderDetails } from "@/features/orders/actions/orders.actions";
 import { OrderFormEdit } from "@/features/orders/components/order-form-edit";
@@ -9,6 +10,9 @@ interface OrderPageProps {
 }
 
 const OrderPage = async ({ params }: OrderPageProps) => {
+  // Check admin authentication
+  await checkAdminAuth();
+
   const { orderId } = await params;
   const queryClient = getQueryClient();
 

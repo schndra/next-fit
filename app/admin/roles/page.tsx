@@ -1,9 +1,13 @@
+import { checkAdminAuth } from "@/lib/admin-auth";
 import { getQueryClient } from "@/components/providers/react-query-provider";
 import { getAllRoles } from "@/features/roles/actions/roles.actions";
 import Roles from "@/features/roles/components/roles";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 const RolesPage = async () => {
+  // Check admin authentication
+  await checkAdminAuth();
+
   const queryClient = getQueryClient();
 
   // Prefetch roles data for instant loading

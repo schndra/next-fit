@@ -1,9 +1,13 @@
+import { checkAdminAuth } from "@/lib/admin-auth";
 import { getQueryClient } from "@/components/providers/react-query-provider";
 import { getAllSizes } from "@/features/sizes/actions/sizes.actions";
 import Sizes from "@/features/sizes/components/sizes";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 const SizesPage = async () => {
+  // Check admin authentication
+  await checkAdminAuth();
+
   const queryClient = getQueryClient();
 
   // Prefetch sizes data for instant loading

@@ -1,3 +1,4 @@
+import { checkAdminAuth } from "@/lib/admin-auth";
 import { Suspense } from "react";
 import {
   dehydrate,
@@ -14,6 +15,9 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 
 export default async function UsersPage() {
+  // Check admin authentication
+  await checkAdminAuth();
+
   const queryClient = new QueryClient();
 
   // Prefetch users and roles data
